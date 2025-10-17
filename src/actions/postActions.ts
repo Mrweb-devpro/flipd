@@ -1,5 +1,7 @@
 import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { auth, postDocRef, usersColRef } from "../db/firebase";
+import type { Dispatch, SetStateAction } from "react";
+import type { PostsType } from "../context/PostContext";
 
 export async function createPostAction(postData: {
   sender: string;
@@ -23,13 +25,11 @@ export async function createPostAction(postData: {
 }
 
 export async function getAllPostsAction(
-  onSuccess: (
-    posts: { content: string; time: string; sender: string }[]
-  ) => void
+  resetState: Dispatch<SetStateAction<PostsType>>
 ) {
   try {
     const unSub = await onSnapshot(postDocRef, async (doc) => {
-      onSuccess(doc.data().posts.reverse() || []);
+      resetState(doc.data()?.posts.reverse() || []);
     });
     return unSub;
   } catch (err) {

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ModalContext } from "./ModalContext";
+import { ModalContext, type ModalNameSpace } from "./ModalContext";
 
 export function ModalProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState("");
+  const [isOpen, setIsOpen] = useState<ModalNameSpace>("");
   const [modalData, setModalData] = useState(null);
 
   const close = () => {

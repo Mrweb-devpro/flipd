@@ -1,10 +1,11 @@
 import { createContext } from "react";
 
-export const initialState: {
+export type PostsType = {
   sender: string;
   time: string;
   userId: string;
   content: "";
-}[] = [];
+}[];
+export const initialState: PostsType = [];
 
 export const PostContext = createContext(initialState);

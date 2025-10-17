@@ -14,7 +14,7 @@ interface UserData {
   username?: string | FormDataEntryValue;
   file?: File | null;
   photoURL?: string | FormDataEntryValue;
-  email?: string | FormDataEntryValue;
+  email?: string;
   bio?: string | FormDataEntryValue;
   password?: string;
 }
@@ -24,7 +24,11 @@ export async function updateProfileAction(
   setIsLoading: (value: boolean) => void,
   setError: (value: string) => void
 ) {
-  const newData: { displayName?: string; photoURL?: string; bio?: string } = {};
+  const newData: {
+    displayName?: string;
+    photoURL?: string;
+    bio?: UserData["bio"];
+  } = {};
   // Clear Error
   setError("");
 
@@ -48,8 +52,8 @@ export async function updateProfileAction(
     // Update the email
     if (data?.email) {
       const credential = await EmailAuthProvider.credential(
-        await auth.currentUser.email,
-        data.password
+        (await auth.currentUser?.email) as string,
+        data.password as string
       );
 
       const result = reauthenticateWithCredential(

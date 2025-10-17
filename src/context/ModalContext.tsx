@@ -1,6 +1,6 @@
 import { createContext, type Dispatch, type SetStateAction } from "react";
 
-// to same the value of each name, for typesafety
+//-- to same the value of each name, for typesafety
 export type ModalNameSpace = "create-post" | "search" | "";
 
 export const initialState: {
