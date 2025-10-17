@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import "./css/animations/miniLoader.css";
+/* @theme {
+  --color-*: initial;
+  --color-main: #37b85c;
+  --color-main-light: #59d47c;
+} */
+
+:root {
+  --main: #37b85c;
+  --main-light: #59d47c;
+}
+* {
+  transition: all 0.2s;
+}
+html {
+  overflow-y: hidden;
+}
+body {
+  font-family: "Kode Mono", monospace;
+  overflow-y: auto;
+  perspective: 200px;
+}
+
+button {
+  cursor: pointer;
+}
+input {
+  color: #444;
+}
+
+.cancel_style path {
+  fill: currentColor;
+}
+.active {
+  color: var(--main);
+}

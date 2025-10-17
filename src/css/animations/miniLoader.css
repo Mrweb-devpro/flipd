@@ -1,0 +1,98 @@
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* //////////////////////////////////////////////////////////////////// */
+/* ////////////////////////////////////////////////////////////////////
+
+
+
+*/
+
+.loading-cont:root {
+  --ball-border: 2px;
+  --ball-size: 4px;
+}
+.loading-cont {
+  position: relative;
+  width: 28px;
+  height: 30px;
+  border-bottom: 2px solid currentColor;
+  border-top: none;
+
+  /* animation: loadingCont 3s linear 2s 2; */
+}
+.loading {
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  width: var(--ball-size);
+  height: var(--ball-size);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  animation: loadingCont2 1s linear 0.5s infinite;
+}
+
+.second-ball {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: var(--ball-size);
+  height: var(--ball-size);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  animation: loadingCont 1s linear 1s infinite;
+}
+.last-ball {
+  position: absolute;
+  top: 0;
+  left: 19px;
+  width: var(--ball-size);
+  height: var(--ball-size);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  animation: loadingCont3 1s linear 1.5s infinite;
+}
+@keyframes loadingCont {
+  0% {
+    transform: translateY(0%);
+  }
+
+  50% {
+    transform: translateY(450%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
+}
+@keyframes loadingCont2 {
+  0% {
+    transform: translateY(0%);
+  }
+
+  50% {
+    transform: translateY(440%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
+}
+@keyframes loadingCont3 {
+  0% {
+    transform: translateY(0%);
+  }
+
+  50% {
+    transform: translateY(550%);
+  }
+
+  100% {
+    transform: translateY(0%);
+  }
+}

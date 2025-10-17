@@ -1,0 +1,19 @@
+export default function BioIcon({ size = "23" }: { size: string }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 23 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.5 14.8333V11M11.5 7.16666H11.5095M21.0833 11C21.0833 16.2927 16.7927 20.5833 11.5 20.5833C6.20723 20.5833 1.91663 16.2927 1.91663 11C1.91663 5.70726 6.20723 1.41666 11.5 1.41666C16.7927 1.41666 21.0833 5.70726 21.0833 11Z"
+        stroke="#46A862"
+        stroke-width="1.91667"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+}
