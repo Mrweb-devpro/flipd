@@ -12,7 +12,6 @@ import ProfileButton from "../components/profile/ProfileButton";
 import ImageUploader from "../components/ImageUploader";
 import { useAuthUser } from "../hooks/useAuthUser";
 import { useStoreUser } from "../hooks/useStoreUsers";
-import PasswordIcon from "../components/icons/PasswordIcon";
 
 export default function Profile() {
   const [errorInImg, setErrorInImg] = useState(false);
@@ -22,7 +21,6 @@ export default function Profile() {
   const [error, setError] = useState("");
   const [hasEmail, setHasEmail] = useState(false);
 
-  console.log(hasEmail);
   const { data: user, refetch } = useAuthUser();
   const [_, { data: storeUser }] = useStoreUser();
 
