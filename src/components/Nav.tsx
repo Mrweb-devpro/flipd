@@ -4,7 +4,7 @@ import LogoutButton from "./button/LogoutButton";
 import { useAuthUser } from "../hooks/useAuthUser";
 import type { User } from "firebase/auth";
 import { useState } from "react";
-import testUserImage from "/public/test-user.png";
+import testUserImage from "/src/assets/images/test-user.png";
 
 export default function Nav() {
   const { data: user } = useAuthUser();
