@@ -15,7 +15,7 @@ export function useAuthUser() {
 
   useEffect(() => {
     const unsubscribe = onAuthChangedAction((user) => {
-      queryClient.setQueryData(["authUser"], user);
+      queryClient.setQueryData(["authUser"], user as User);
     });
     return unsubscribe;
   }, [queryClient]);
@@ -23,11 +23,10 @@ export function useAuthUser() {
   return query;
 }
 
-async function getUser() {
+async function getUser(): Promise<User | null> {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthChangedAction((user) => {
-      console.log("User testing: ", user);
-      resolve(user as User);
+      resolve(user);
     });
     reject(unsubscribe());
   });

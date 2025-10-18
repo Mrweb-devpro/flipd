@@ -3,8 +3,10 @@ import { IoClose } from "react-icons/io5";
 
 export default function CloseModalButton({
   children,
+  disabled = false,
   type = "",
 }: {
+  disabled?: boolean;
   children?: React.ReactNode;
   type?: string;
 }) {
@@ -14,6 +16,7 @@ export default function CloseModalButton({
     return (
       <button
         onClick={close}
+        disabled={disabled}
         type="submit"
         className="p-2 text-red-500 flex gap-2 items-center border-[1.4px] border-red-500 rounded-sm hover:bg-red-500 hover:text-white justify-center"
       >

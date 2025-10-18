@@ -40,6 +40,7 @@ export default function Profile() {
       await updateProfileAction({ ...formValues, file }, setIsSaving, setError);
 
       setIsEditMode(false);
+      setHasEmail(false);
       refetch();
     }
   };

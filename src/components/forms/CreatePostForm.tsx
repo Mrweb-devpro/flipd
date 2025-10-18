@@ -1,13 +1,15 @@
 import { MdOutlinePostAdd } from "react-icons/md";
 import CloseModalButton from "../modal/CloseModalButton";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { createPostAction } from "../../actions/postActions";
 import { useModal } from "../../hooks/useModal";
 import { useAuthUser } from "../../hooks/useAuthUser";
+import Loader from "../Loader";
 
 export default function CreatePostForm() {
-  const [_, setIsloading] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
   const [post, setPost] = useState("");
+  const [error, setError] = useState<string>("");
 
   const { close } = useModal();
   const { data: user } = useAuthUser();
@@ -15,8 +17,9 @@ export default function CreatePostForm() {
   // create the post
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setError("");
 
-    if (post.length <= 1) return;
+    if (post.trim().length <= 1) return setError("Add a post content");
     setIsloading(true);
     await createPostAction({
       sender: user?.displayName as string,
@@ -28,15 +31,12 @@ export default function CreatePostForm() {
 
   return (
     <form
-      className="w-3/4 md:w-1/2 bg-white border flex justify-center p-10 rounded-xl flex-col gap-6 items-center text-center h-fit"
+      className="max-w-[475px] w-full md:w-1/2 bg-white border flex justify-center p-10 rounded-xl flex-col gap-6 items-center text-center h-fit my-auto"
       onSubmit={handleSubmit}
     >
-      <h1 className="text-[var(--main)] font-bold text-3xl">
+      <h1 className="text-[var(--main)] font-bold text-xl md:text-2xl sm:text-xl">
         {"< "}Create a new Post {" />"}
       </h1>
-      <p className="text-stone-400">
-        Welcome Back, Login now to continue Exploring
-      </p>
 
       <div className="flex flex-col items-center gap-6 w-full">
         <div className="flex flex-col gap-4 items-center w-full justify-center">
@@ -49,6 +49,7 @@ export default function CreatePostForm() {
               Post Content <i className="text-red-500">*</i>
             </label>
           </span>
+
           <textarea
             autoComplete="off"
             id="post"
@@ -63,15 +64,31 @@ export default function CreatePostForm() {
           />
         </div>
       </div>
+      {error && (
+        <i className="text-red-500 space-x-4 text-sm">
+          <span>&#9888;</span>
+          <span>{error}</span>
+        </i>
+      )}
 
       <div className="flex items-center justify-center gap-6">
         <button
           type="submit"
-          className=" p-2 hover:text-[var(--main)] flex gap-2 items-center border-[1.4px] border-[var(--main)] hover:bg-transparent rounded-sm bg-[var(--main)] text-white justify-center"
+          disabled={isLoading}
+          className=" p-2 hover:text-[var(--main)] flex gap-2 items-center border-[1.4px] border-[var(--main)] hover:bg-transparent rounded-sm bg-[var(--main)] text-white justify-center disabled:border-amber-500 disabled:text-amber-500 disabled:bg-transparent"
         >
-          Create Post
+          {isLoading ? (
+            <>
+              Loading
+              <Loader.MiniLoader />
+            </>
+          ) : (
+            "Create Post"
+          )}
         </button>
-        <CloseModalButton>Cancel</CloseModalButton>
+        {isLoading || (
+          <CloseModalButton disabled={isLoading}>Cancel</CloseModalButton>
+        )}
       </div>
     </form>
   );

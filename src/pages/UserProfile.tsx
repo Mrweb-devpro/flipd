@@ -3,6 +3,7 @@ import Loader from "../components/Loader";
 import Section from "../components/Section";
 import { useStoreUser } from "../hooks/useStoreUsers";
 import { usePost } from "../hooks/usePost";
+import testUserImage from "/src/assets/images/test-user.png";
 
 import UserProfileButton from "../components/button/UserProfileButton";
 import AboutUser from "../components/AboutUser";
@@ -36,7 +37,6 @@ export default function UserProfile() {
   const isBlocked = currentAuthUser?.blocked?.includes(user?.user_id);
   const isFriends = currentAuthUser?.friends?.includes(user?.user_id);
 
-  console.log(user);
   //-- Loading page
   if (isPending) return <Loader />;
 
@@ -52,7 +52,7 @@ export default function UserProfile() {
         </button>
         <div className="flex flex-col gap-2">
           <img
-            src={user?.photoURL || "/test-user.png"}
+            src={user?.photoURL || testUserImage}
             alt=""
             className="md:w-56 w-40 md:h-56 h-40 rounded-2xl"
           />
