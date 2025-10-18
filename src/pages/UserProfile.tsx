@@ -1,14 +1,17 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import Loader from "../components/Loader";
-import Section from "../components/Section";
-import { useStoreUser } from "../hooks/useStoreUsers";
-import { usePost } from "../hooks/usePost";
-import testUserImage from "/src/assets/images/test-user.png";
-
-import UserProfileButton from "../components/button/UserProfileButton";
-import AboutUser from "../components/AboutUser";
 import { BiShare } from "react-icons/bi";
 
+import Loader from "../components/Loader";
+import Section from "../components/Section";
+import AboutUser from "../components/AboutUser";
+import testUserImage from "/src/assets/images/test-user.png";
+import UserProfileButton from "../components/button/UserProfileButton";
+
+// custom hooks
+import { usePost } from "../hooks/usePost";
+import { useStoreUser } from "../hooks/useStoreUsers";
+
+//-- Tab variable types
 type TabType = "post" | "about";
 
 export default function UserProfile() {
