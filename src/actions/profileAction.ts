@@ -9,6 +9,7 @@ import { auth, usersColRef } from "../db/firebase";
 import { UploadProfileImageSupabase } from "../db/supabase";
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { checkIfUsernameExist, getUserIdByUsername } from "./userStoreAction";
+import { getByUsername } from "../queryOptions/allQueryOptions";
 
 interface UserData {
   username?: string | FormDataEntryValue;
@@ -100,6 +101,13 @@ export async function addFriendAction(username: string, state = []) {
     await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
       friends: arrayUnion(userId),
     });
+    // send the friendRequest
+    await updateDoc(doc(usersColRef, userId), {
+      notifications: arrayUnion({
+        type: "friend-request",
+        message: `${username} sent you a friend request`,
+      }),
+    });
   } catch (err) {
     console.error("Adding of friends Failed: ", err);
     throw err;
@@ -122,13 +130,13 @@ export async function blockFriendAction(username: string) {
     throw err;
   }
 }
-// BLOCKING OF USERS
+// unBLOCKING OF USERS
 export async function unblockFriendAction(username: string) {
   try {
     // getting the user id
     const userId = await getUserIdByUsername(username);
 
-    //  add user to the current user blocked-list
+    //  remove user from the current user blocked-list
     await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
       blocked: arrayRemove(userId),
     });
