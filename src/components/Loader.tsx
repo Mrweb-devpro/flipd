@@ -1,7 +1,9 @@
 export default function Loader() {
   return (
     <div className="w-screen h-screen flex flex-col items-center gap-10 justify-center">
-      <h1>Loading...</h1>
+      <h1 className="text-[var(--main)] text-lg font-bold">
+        {"< "}Loading... {">"}
+      </h1>
       {<Loader.MiniLoader />}
     </div>
   );

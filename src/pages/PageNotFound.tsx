@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import image404 from "/src/assets/icons/404.svg";
 import GoBackButton from "../components/button/goBackButton";
-import type { ErrorBoundaryProps } from "react-error-boundary";
 
 type NotFoundType = "User-Not-Found";
 
@@ -27,11 +26,16 @@ export default function PageNotfound({
 function UserNotFound() {
   const { username } = useParams();
   return (
-    <h1 className="text-center text-lg w-3/4 capitalize text-red-800 flex flex-col gap-2">
+    <h1 className="text-center text-sm w-3/4 capitalize text-green-800 flex flex-col gap-2">
       <strong>
-        The user with the username: <i className="normal-case">{username}</i>
-        <br />
+        Sorry, the profile section for{" "}
+        <i className="normal-case text-red-400">
+          (the URL: {location.pathname}){" "}
+        </i>
         does not exist.
+        <br />
+        It may have been removed or never created. Please check the username and
+        try again.
       </strong>
     </h1>
   );
