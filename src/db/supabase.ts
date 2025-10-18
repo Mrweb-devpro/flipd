@@ -7,7 +7,7 @@ const supabaseAnonKey =
 export const supabase = createClient(supabaseURL, supabaseAnonKey);
 
 export const DEFAULT_PHOTO_URL =
-  "https://dqalzfbrqampcziqspbk.supabase.co/storage/v1/object/public/avatars/users_avatars/test_user.png";
+  "https://dqalzfbrqampcziqspbk.supabase.co/storage/v1/object/public/avatars/users_avatars/test-user.png";
 
 export async function UploadProfileImageSupabase(
   file: File,

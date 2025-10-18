@@ -12,6 +12,7 @@ import ProfileButton from "../components/profile/ProfileButton";
 import ImageUploader from "../components/ImageUploader";
 import { useAuthUser } from "../hooks/useAuthUser";
 import { useStoreUser } from "../hooks/useStoreUsers";
+import testUserImage from "/src/assets/images/test-user.png";
 
 export default function Profile() {
   const [errorInImg, setErrorInImg] = useState(false);
@@ -61,7 +62,7 @@ export default function Profile() {
           <ImageUploader file={file} setFile={setFile} />
         ) : (
           <img
-            src={user.photoURL || "/test-user.png"}
+            src={user.photoURL || testUserImage}
             alt=""
             className="md:w-56 w-40 md:h-56 h-40 rounded-2xl"
             onError={() => {

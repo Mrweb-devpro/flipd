@@ -3,6 +3,8 @@ import { useFileReader } from "../hooks/useFileReader";
 import { DEFAULT_PHOTO_URL } from "../db/supabase";
 import { useAuthUser } from "../hooks/useAuthUser";
 
+import testUserImage from "/src/assets/images/test-user.png";
+
 export default function ImageUploader({
   file,
   setFile,
@@ -36,7 +38,7 @@ export default function ImageUploader({
   return (
     <>
       <img
-        src={user.photoURL || "/test-user.png"}
+        src={user.photoURL || testUserImage}
         alt="The imge yu"
         ref={imageRef}
         className="md:w-26 w-16 md:h-26 h-16 rounded-lg"
