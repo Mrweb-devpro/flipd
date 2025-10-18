@@ -29,7 +29,7 @@ export async function getAllPostsAction(
 ) {
   try {
     const unSub = await onSnapshot(postDocRef, async (doc) => {
-      resetState(doc.data()?.posts.reverse() || []);
+      resetState(doc.data()?.posts?.reverse() || []);
     });
     return unSub;
   } catch (err) {

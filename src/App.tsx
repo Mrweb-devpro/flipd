@@ -11,6 +11,8 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import Jotter from "./pages/Jotter";
 import { ModalProvider } from "./context/ModalProvider";
+import PageNotfound from "./pages/PageNotfound";
+import { ErrorBoundary } from "react-error-boundary";
 
 function App() {
   const queryClient = new QueryClient();
@@ -38,9 +40,19 @@ function App() {
               <Route index element={<Home />} />
               <Route path="/profile">
                 <Route index element={<Profile />} />
-                <Route path=":username" element={<UserProfile />} />
+                <Route
+                  path=":username"
+                  element={
+                    <ErrorBoundary
+                      fallback={<PageNotfound type="User-Not-Found" />}
+                    >
+                      <UserProfile />
+                    </ErrorBoundary>
+                  }
+                />
               </Route>
             </Route>
+            <Route path="*" element={<PageNotfound />} />
           </Routes>
         </BrowserRouter>
       </ModalProvider>

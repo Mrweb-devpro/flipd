@@ -10,14 +10,16 @@ import UserProfileButton from "../components/button/UserProfileButton";
 // custom hooks
 import { usePost } from "../hooks/usePost";
 import { useStoreUser } from "../hooks/useStoreUsers";
+import GoBackButton from "../components/button/goBackButton";
+import { useEffect } from "react";
 
 //-- Tab variable types
 type TabType = "post" | "about";
 
 export default function UserProfile() {
   //-- hooks
+  const naviagate = useNavigate();
   const { username } = useParams();
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const tabParams = searchParams.get("tab");
@@ -26,6 +28,16 @@ export default function UserProfile() {
   const posts = usePost();
   const [{ data: user, isPending }, authUserStore] = useStoreUser(username);
   const { data: currentAuthUser } = authUserStore;
+
+  if (!isPending && !user)
+    throw new Error(`The User With The Username: ${username}. Does not exist`);
+
+  // --useEffects;
+  useEffect(() => {
+    if (!currentAuthUser || !user) return;
+    if (currentAuthUser.username === user.username)
+      naviagate("/profile", { replace: true });
+  }, [currentAuthUser, user]);
 
   //-- utils
   const allUsersPost = posts.filter((post) => user?.posts?.includes(post.time));
@@ -46,13 +58,7 @@ export default function UserProfile() {
   return (
     <Section>
       <div className=" relative flex flex-col items-center gap-10 p-5 w-full bg-green-50">
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className="self-start hover:bg-[var(--main)] hover:text-stone-100 py-2 px-3 text-stone-600 rounded-sm "
-        >
-          ← go back
-        </button>
+        <GoBackButton />
         <div className="flex flex-col gap-2">
           <img
             src={user?.photoURL || testUserImage}
