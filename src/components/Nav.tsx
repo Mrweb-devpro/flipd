@@ -5,6 +5,7 @@ import { useAuthUser } from "../hooks/useAuthUser";
 import type { User } from "firebase/auth";
 import { useState } from "react";
 import testUserImage from "/src/assets/images/test-user.png";
+import NotificationBellButton from "./notifications/NotificationBellButton";
 
 export default function Nav() {
   const { data: user } = useAuthUser();
@@ -26,7 +27,7 @@ export default function Nav() {
           <li>
             <span className="flex items-center justify-between gap-4">
               <Link to="/profile" className="flex items-center gap-2">
-                <h2>{user.displayName}</h2>
+                <h2 className="hidden md:inline-block">{user.displayName}</h2>
                 <img
                   loading="eager"
                   src={showFallbackImage ? testUserImage : user?.photoURL}
@@ -44,7 +45,11 @@ export default function Nav() {
                   className="border-2 border-[var(--main-light)] rounded-sm text-xs"
                 />
               </Link>
-              <LogoutButton />
+              {location.pathname !== "/login" &&
+                location.pathname !== "/sign-up" && <NotificationBellButton />}
+              <span className="hidden md:inline-block">
+                <LogoutButton onlyIcon={true} />
+              </span>
             </span>
           </li>
         )}

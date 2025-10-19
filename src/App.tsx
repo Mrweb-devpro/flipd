@@ -13,6 +13,7 @@ import Jotter from "./pages/Jotter";
 import { ModalProvider } from "./context/ModalProvider";
 import PageNotfound from "./pages/PageNotfound";
 import { ErrorBoundary } from "react-error-boundary";
+import NotificationProvider from "./context/NotificationProvider";
 
 function App() {
   const queryClient = new QueryClient();
@@ -33,7 +34,9 @@ function App() {
               element={
                 // <Suspense></Suspense>
                 <ProtectedRoute>
-                  <Dashboard />
+                  <NotificationProvider>
+                    <Dashboard />
+                  </NotificationProvider>
                 </ProtectedRoute>
               }
             >

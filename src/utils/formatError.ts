@@ -8,7 +8,7 @@ export function formatFirbaseError(error: FirebaseError) {
     .replace("auth", "")
     .replaceAll("-", " ");
 
-  const errorCodeMessage = error?.code?.split("/").at(-1).replaceAll("-", " ");
+  const errorCodeMessage = error?.code?.split("/").at(-1)?.replaceAll("-", " ");
 
   if (errorCodeMessage === "email already in use")
     return "Email is Already in use.";

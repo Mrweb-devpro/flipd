@@ -1,12 +1,20 @@
 import { CiLogout } from "react-icons/ci";
 import { logoutAction } from "../../actions/authActions";
 import { useNavigate } from "react-router-dom";
+import type { FormEvent, MouseEventHandler } from "react";
 
-export default function LogoutButton() {
+export default function LogoutButton({
+  onlyIcon = false,
+}: {
+  onlyIcon?: true | false;
+}) {
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleClick = async () => {
+    const confirmedLogout = window.confirm(
+      "You are about to logout of your account. Are you sure you want to proceed with this action ?"
+    );
+    if (!confirmedLogout) return;
 
     await logoutAction(() => {
       navigate("/login");
@@ -14,14 +22,13 @@ export default function LogoutButton() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <button
-        type="submit"
-        className="p-2 text-red-500 flex gap-2 items-center border-[1.4px] border-red-500 rounded-sm hover:bg-red-500 hover:text-white justify-center"
-      >
-        <CiLogout size="25" />
-        Logout
-      </button>
-    </form>
+    <button
+      type="button"
+      onClick={handleClick}
+      className="p-2 text-red-500 flex gap-2 items-center border-[1.4px] border-red-500 rounded-sm hover:bg-red-500 hover:text-white justify-center"
+    >
+      <CiLogout size="25" />
+      {onlyIcon || "Logout"}
+    </button>
   );
 }

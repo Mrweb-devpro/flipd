@@ -9,7 +9,7 @@ import { auth, usersColRef } from "../db/firebase";
 import { UploadProfileImageSupabase } from "../db/supabase";
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { checkIfUsernameExist, getUserIdByUsername } from "./userStoreAction";
-import { getByUsername } from "../queryOptions/allQueryOptions";
+import { friendRequestNotification } from "../utils/notificationTypeStrings";
 
 interface UserData {
   username?: string | FormDataEntryValue;
@@ -104,8 +104,10 @@ export async function addFriendAction(username: string, state = []) {
     // send the friendRequest
     await updateDoc(doc(usersColRef, userId), {
       notifications: arrayUnion({
-        type: "friend-request",
-        message: `${username} sent you a friend request`,
+        type: friendRequestNotification,
+        message: `${auth.currentUser?.displayName} sent you a friend request`,
+        special: auth.currentUser?.displayName,
+        seen: false,
       }),
     });
   } catch (err) {

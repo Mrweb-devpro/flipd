@@ -13,6 +13,8 @@ import ImageUploader from "../components/ImageUploader";
 import { useAuthUser } from "../hooks/useAuthUser";
 import { useStoreUser } from "../hooks/useStoreUsers";
 import testUserImage from "/src/assets/images/test-user.png";
+import LogoutButton from "../components/button/LogoutButton";
+import type { FirebaseError } from "firebase/app";
 
 export default function Profile() {
   const [errorInImg, setErrorInImg] = useState(false);
@@ -145,16 +147,19 @@ export default function Profile() {
               </ProfileButton>
             </>
           ) : (
-            <ProfileButton
-              handleClick={() => {
-                setError("");
-                setIsEditMode(true);
-              }}
-              isSaving={isSaving}
-            >
-              <EditIcon />
-              Edit
-            </ProfileButton>
+            <>
+              <ProfileButton
+                handleClick={() => {
+                  setError("");
+                  setIsEditMode(true);
+                }}
+                isSaving={isSaving}
+              >
+                <EditIcon />
+                Edit
+              </ProfileButton>
+              <LogoutButton />
+            </>
           )}
         </li>
       </ul>
