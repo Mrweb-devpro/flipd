@@ -24,5 +24,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "trash/Login copy.tsx",
+    "trash/Login_old_state-refactor.tsx",
+    "trash/Login_old.tsx"
+  ]
 }
