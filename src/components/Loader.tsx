@@ -4,16 +4,19 @@ export default function Loader() {
       <h1 className="text-[var(--main)] text-lg font-bold">
         {"< "}Loading... {">"}
       </h1>
-      {<Loader.MiniLoader />}
+      <span className="text-[var(--main)]">{<Loader.MiniLoader />}</span>
     </div>
   );
 }
 
-Loader.MiniLoader = function () {
-  // return <h1 className="custom_mini_loader">{"</>"}</h1>;
+Loader.MiniLoader = function ({
+  color = "",
+}: {
+  color?: string | "var(--main)" | "white";
+}) {
   return (
     <i className="self-center">
-      <div className="loading-cont">
+      <div className="loading-cont" style={{ color }}>
         <div className="loading"></div>
         <span className="first-ball"></span>
         <span className="second-ball"></span>

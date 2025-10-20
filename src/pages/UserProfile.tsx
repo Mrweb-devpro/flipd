@@ -11,7 +11,8 @@ import UserProfileButton from "../components/button/UserProfileButton";
 import { usePost } from "../hooks/usePost";
 import { useStoreUser } from "../hooks/useStoreUsers";
 import GoBackButton from "../components/button/goBackButton";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
+import { friendStatus } from "../actions/profileAction";
 
 //-- Tab variable types
 type TabType = "post" | "about";
@@ -50,8 +51,17 @@ export default function UserProfile() {
   };
 
   const isBlocked = currentAuthUser?.blocked?.includes(user?.user_id);
-  const isFriends = currentAuthUser?.friends?.includes(user?.user_id);
+  const isFriends = currentAuthUser?.friends?.some(({ id }) =>
+    id.includes(user?.user_id)
+  );
 
+  const isFriendPending = currentAuthUser?.friends?.find(({ id }) =>
+    id.includes(user?.user_id)
+  )?.status;
+  const isHisFriendPending = user?.friends?.find(({ id }) =>
+    id.includes(currentAuthUser?.user_id)
+  )?.status;
+  console.log(isHisFriendPending === friendStatus.pending);
   //-- Loading page
   if (isPending) return <Loader />;
 
@@ -61,29 +71,40 @@ export default function UserProfile() {
         <GoBackButton />
         <div className="flex flex-col gap-2">
           <img
-            src={user?.photoURL || testUserImage}
+            src={(isBlocked ? false : user?.photoURL) || testUserImage}
             alt=""
             className="md:w-56 w-40 md:h-56 h-40 rounded-2xl"
           />
           <h2 className="font-bold text-xl text-[var(--main)] text-center">
-            {user.username}
+            {isBlocked ? "user" : user.username}
           </h2>
-          <p className="text-center text-stone-600 text-sm">
-            {user?.friends.length} friends
-          </p>
+          {isBlocked || (
+            <p className="text-center text-stone-600 text-sm">
+              {user?.friends?.length} friends
+            </p>
+          )}
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-wrap items-center justify-center">
           {isBlocked || isFriends || (
             <UserProfileButton action="add_friend" user={user}>
-              Add friend
+              {!isFriends
+                ? isHisFriendPending === friendStatus.pending
+                  ? "Accept Friend Request"
+                  : "Send Friend request"
+                : ""}
             </UserProfileButton>
           )}
           {isBlocked ||
             (isFriends && (
-              <UserProfileButton action="unfriend" user={user}>
-                Unfriend
-              </UserProfileButton>
+              <Suspense fallback={<Loader.MiniLoader />}>
+                <UserProfileButton action="unfriend" user={user}>
+                  {isFriends &&
+                    (isFriendPending === friendStatus.pending
+                      ? "Cancel Request"
+                      : "UnFriend")}
+                </UserProfileButton>
+              </Suspense>
             ))}
           {isBlocked || (
             <UserProfileButton action="block_friend" user={user}>
@@ -104,61 +125,66 @@ export default function UserProfile() {
           )}
         </div>
 
-        <ul className="flex gap-5 border-t border-stone-400/70 w-full">
-          <li>
-            <button
-              onClick={() => setSearchParams("?tab=post")}
-              style={colorObj("post")}
-              className="p-3 underline inline-block underline-offset-8 text-stone-600 decoration-current"
-            >
-              Post
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setSearchParams("?tab=about")}
-              style={colorObj("about")}
-              className="p-3 underline inline-block underline-offset-8 text-stone-600 decoration-current"
-            >
-              About
-            </button>
-          </li>
-        </ul>
+        {isBlocked || (
+          <ul className="flex gap-5 border-t border-stone-400/70 w-full">
+            <li>
+              <button
+                onClick={() => setSearchParams("?tab=post")}
+                style={colorObj("post")}
+                className="p-3 underline inline-block underline-offset-8 text-stone-600 decoration-current"
+              >
+                Post
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => setSearchParams("?tab=about")}
+                style={colorObj("about")}
+                className="p-3 underline inline-block underline-offset-8 text-stone-600 decoration-current"
+              >
+                About
+              </button>
+            </li>
+          </ul>
+        )}
       </div>
+
       <main className="flex flex-col gap-5 items-center p-5 bg-green-50 rounded-lg w-[96%] ">
-        <article className="flex flex-col w-full gap-2">
-          {tabParams === "about" ? (
-            <blockquote>
-              <AboutUser user={user} numOfPosts={allUsersPost.length} />
-            </blockquote>
-          ) : (
-            <>
-              {allUsersPost.map((post) => (
-                <blockquote
-                  key={post.time}
-                  className="flex flex-col gap-4 bg-green-200/60 w-full px-4 py-6 rounded-lg border border-transparent hover:border-green-500 "
-                >
-                  <div className="flex  gap-4">
-                    <img
-                      src={user?.photoURL}
-                      className="w-10 h-10 rounded-full"
-                      alt=""
-                    />
-                    <span className="flex flex-col">
-                      <h3 className="font-bold text-sm">{user.username}</h3>
-                      <p className="text-sm text-green-400">
-                        {new Date(post.time).toDateString()}
-                      </p>
-                    </span>
-                  </div>
-                  <div className="text-stone-600 text-sm leading-6">
-                    {post.content}
-                  </div>
-                </blockquote>
-              ))}
-            </>
-          )}
-        </article>
+        {isBlocked || (
+          <article className="flex flex-col w-full gap-2">
+            {tabParams === "about" ? (
+              <blockquote>
+                <AboutUser user={user} numOfPosts={allUsersPost.length} />
+              </blockquote>
+            ) : (
+              <>
+                {allUsersPost.map((post) => (
+                  <blockquote
+                    key={post.time}
+                    className="flex flex-col gap-4 bg-green-200/60 w-full px-4 py-6 rounded-lg border border-transparent hover:border-green-500 "
+                  >
+                    <div className="flex  gap-4">
+                      <img
+                        src={user?.photoURL}
+                        className="w-10 h-10 rounded-full"
+                        alt=""
+                      />
+                      <span className="flex flex-col">
+                        <h3 className="font-bold text-sm">{user.username}</h3>
+                        <p className="text-sm text-green-400">
+                          {new Date(post.time).toDateString()}
+                        </p>
+                      </span>
+                    </div>
+                    <div className="text-stone-600 text-sm leading-6">
+                      {post.content}
+                    </div>
+                  </blockquote>
+                ))}
+              </>
+            )}
+          </article>
+        )}
       </main>
     </Section>
   );

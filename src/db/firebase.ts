@@ -28,6 +28,8 @@ export const db = getFirestore(app);
 //-- collections refs
 export const postCOlRef = collection(db, "allPosts");
 export const usersColRef = collection(db, "allUsers");
+export const userNotificationColRef = (ID: string) =>
+  collection(db, `allUsers/${ID}/notifications`);
 
 //-- doc refs
 export const postDocRef = doc(postCOlRef, "publicPosts");

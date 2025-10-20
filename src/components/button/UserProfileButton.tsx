@@ -7,9 +7,9 @@ import {
 import type { DocumentData } from "firebase/firestore";
 
 import { useStoreUser } from "../../hooks/useStoreUsers";
-import { Suspense } from "react";
 import Loader from "../Loader";
 import { shareContentAction } from "../../actions/windowsActions";
+import { useState } from "react";
 
 type ProfileButtonActionType =
   | "add_friend"
@@ -27,47 +27,49 @@ export default function UserProfileButton({
   action: ProfileButtonActionType;
   user: DocumentData;
 }) {
-  const [_, { refetch }] = useStoreUser();
+  const [_, { refetch, isRefetching }] = useStoreUser();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // const x = useState(false);
-  function handleProfileButton() {
+  async function handleProfileButton() {
     if (!action) return;
 
+    setIsLoading(true);
     if (action === "add_friend") {
-      addFriendAction(user.username);
+      await addFriendAction(user.username);
     } else if (action === "unfriend") {
-      unFriendAction(user.username);
+      await unFriendAction(user.username);
     } else if (action === "block_friend") {
-      blockFriendAction(user.username);
+      await blockFriendAction(user.username);
     } else if (action === "unblock_friend") {
-      unblockFriendAction(user.username);
+      await unblockFriendAction(user.username);
     } else if (action === "share") {
-      shareContentAction({
+      await shareContentAction({
         title: "FlipD profile",
         text: `Checkout ${user.username}'s profile on linkedin.`,
         url: `${location.origin}/profile/${user.username}`,
       });
     }
+    setIsLoading(false);
     refetch();
   }
 
   return (
-    <Suspense fallback={<Loader.MiniLoader />}>
-      <button
-        onClick={handleProfileButton}
-        className={
-          "flex gap-4 items-center " +
-          (action === "add_friend"
-            ? "text-sm bg-[var(--main)] text-white px-4 py-2 rounded-xl"
-            : action === "block_friend"
-            ? "text-sm bg-red-500 text-white px-4 py-2 rounded-xl"
-            : action === "unblock_friend"
-            ? "text-sm border border-red-500 text-red-500 px-4 py-2 rounded-xl"
-            : "text-sm border border-[var(--main)] text-[var(--main)] px-4 py-2 rounded-xl")
-        }
-      >
-        {children}
-      </button>
-    </Suspense>
+    <button
+      onClick={handleProfileButton}
+      disabled={isLoading}
+      className={
+        "flex gap-4 items-center disabled:grayscale-75 " +
+        (action === "add_friend"
+          ? "text-sm bg-[var(--main)] text-white px-4 py-2 rounded-xl"
+          : action === "block_friend"
+          ? "text-sm bg-red-500 text-white px-4 py-2 rounded-xl"
+          : action === "unblock_friend"
+          ? "text-sm border border-red-500 text-red-500 px-4 py-2 rounded-xl"
+          : "text-sm border border-[var(--main)] text-[var(--main)] px-4 py-2 rounded-xl")
+      }
+    >
+      {isLoading && <Loader.MiniLoader />}
+      {children}
+    </button>
   );
 }
