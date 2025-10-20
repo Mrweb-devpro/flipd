@@ -119,6 +119,7 @@ export async function addFriendAction(username: string) {
     const isPendingFriendfriend = (await friend.data())?.friends?.find(
       ({ id }) => id === auth.currentUser?.uid
     );
+
     if (isPendingFriendfriend) {
       //  add user to the current user friend-list
       await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
