@@ -10,6 +10,7 @@ import { UploadProfileImageSupabase } from "../db/supabase";
 import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { checkIfUsernameExist, getUserIdByUsername } from "./userStoreAction";
 import { friendRequestNotification } from "../utils/notificationTypeStrings";
+import { boolean } from "zod";
 
 interface UserData {
   username?: string | FormDataEntryValue;

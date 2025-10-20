@@ -1,10 +1,15 @@
 import { MdPersonAdd } from "react-icons/md";
 import { friendRequestNotification } from "../../utils/notificationTypeStrings";
 import useNotifications from "../../hooks/useNotifications";
+import type { FormEvent, MouseEventHandler } from "react";
 
 export default function NotificationDropDown() {
   const { notifications } = useNotifications();
   console.log(notifications);
+
+  const handleReject = (e: MouseEventHandler<HTMLButtonElement>) => {
+    console.log("Reject request");
+  };
   return (
     <div className="absolute z-20 top-2 shadow right-0 bg-stone-100 border border-stone-200 rounded-sm flex p-5 flex-col gap-3">
       <h3 className="font-bold text-[var(--main)]">Notifications</h3>
@@ -21,6 +26,13 @@ export default function NotificationDropDown() {
                   {notification.special}
                 </a>
                 sent you a friend request
+                <button
+                  type="button"
+                  className="border-b border-red-500 text-red-500 font-bold"
+                  onClick={handleReject}
+                >
+                  reject
+                </button>
               </li>
             );
           else
