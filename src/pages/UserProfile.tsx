@@ -80,7 +80,12 @@ export default function UserProfile() {
           </h2>
           {isBlocked || (
             <p className="text-center text-stone-600 text-sm">
-              {user?.friends?.length} friends
+              {
+                user?.friends.filter(
+                  (friend) => friend.status === friendStatus.accepted
+                )?.length
+              }{" "}
+              friends
             </p>
           )}
         </div>
@@ -88,21 +93,18 @@ export default function UserProfile() {
         <div className="flex gap-4 flex-wrap items-center justify-center">
           {isBlocked || isFriends || (
             <UserProfileButton action="add_friend" user={user}>
-              {!isFriends
-                ? isHisFriendPending === friendStatus.pending
-                  ? "Accept Friend Request"
-                  : "Send Friend request"
-                : ""}
+              {isHisFriendPending === friendStatus.pending
+                ? "Accept Friend Request"
+                : "Send Friend request"}
             </UserProfileButton>
           )}
           {isBlocked ||
             (isFriends && (
               <Suspense fallback={<Loader.MiniLoader />}>
                 <UserProfileButton action="unfriend" user={user}>
-                  {isFriends &&
-                    (isFriendPending === friendStatus.pending
-                      ? "Cancel Request"
-                      : "UnFriend")}
+                  {isFriendPending === friendStatus.pending
+                    ? "Cancel Request"
+                    : "UnFriend"}
                 </UserProfileButton>
               </Suspense>
             ))}

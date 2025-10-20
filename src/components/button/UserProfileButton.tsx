@@ -1,16 +1,24 @@
+import { useState } from "react";
+
+//-- actions
 import {
   addFriendAction,
   blockFriendAction,
   unblockFriendAction,
   unFriendAction,
 } from "../../actions/profileAction";
+import { shareContentAction } from "../../actions/windowsActions";
+
+//-- custom hooks
+import { useStoreUser } from "../../hooks/useStoreUsers";
+
+//-- components
+import Loader from "../Loader";
+
+//-- types
 import type { DocumentData } from "firebase/firestore";
 
-import { useStoreUser } from "../../hooks/useStoreUsers";
-import Loader from "../Loader";
-import { shareContentAction } from "../../actions/windowsActions";
-import { useState } from "react";
-
+// types
 type ProfileButtonActionType =
   | "add_friend"
   | "block_friend"
@@ -27,7 +35,7 @@ export default function UserProfileButton({
   action: ProfileButtonActionType;
   user: DocumentData;
 }) {
-  const [_, { refetch, isRefetching }] = useStoreUser();
+  const [_, { refetch }] = useStoreUser();
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleProfileButton() {
@@ -50,7 +58,7 @@ export default function UserProfileButton({
       });
     }
     setIsLoading(false);
-    refetch();
+    await refetch();
   }
 
   return (

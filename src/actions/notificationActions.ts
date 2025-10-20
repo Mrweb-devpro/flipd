@@ -1,17 +1,20 @@
+//-- Database
 import {
-  arrayRemove,
-  deleteDoc,
   doc,
   onSnapshot,
   updateDoc,
   type DocumentData,
 } from "firebase/firestore";
-import { auth, userNotificationColRef, usersColRef } from "../db/firebase";
-import { getUserIdByUsername } from "./userStoreAction";
-import { friendStatus } from "./profileAction";
-import type { UserNotificationType } from "../context/NotificationContext";
-//
+import { auth, userNotificationColRef } from "../db/firebase";
 
+//-- actions
+import { getUserIdByUsername } from "./userStoreAction";
+
+//-- types
+import type { UserNotificationType } from "../context/NotificationContext";
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 //-- get notifcations
 export async function getUserNotifications(
   resetState: any,
@@ -38,28 +41,9 @@ export async function getUserNotifications(
   }
 }
 
-//-- reject Friend Request Action
-export async function rejectFriendRequestAction(
-  notificationObj: UserNotificationType
-) {
-  const username = notificationObj.special;
-
-  const userId = await getUserIdByUsername(username);
-
-  // remove currentuser from his friends list
-  await updateDoc(doc(usersColRef, userId), {
-    friends: arrayRemove({
-      id: auth.currentUser?.uid,
-      status: friendStatus.pending,
-    }),
-  });
-
-  // delete the notification he sent to me
-  await deleteDoc(
-    doc(userNotificationColRef(auth.currentUser?.uid as string), userId)
-  );
-}
-
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//--  handle Seen notifications
 export async function handleSeenAction(notificationObj: UserNotificationType) {
   const userId = await getUserIdByUsername(notificationObj.special);
 

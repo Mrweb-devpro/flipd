@@ -1,3 +1,4 @@
+//-- Database
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -5,7 +6,6 @@ import {
   verifyBeforeUpdateEmail,
   type User,
 } from "firebase/auth";
-import { auth, userNotificationColRef, usersColRef } from "../db/firebase";
 import { UploadProfileImageSupabase } from "../db/supabase";
 import {
   arrayRemove,
@@ -16,16 +16,25 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import { auth, userNotificationColRef, usersColRef } from "../db/firebase";
+
+//--  actions
 import {
   checkIfUsernameExist,
   getOneUserAction,
   getUserIdByUsername,
 } from "./userStoreAction";
+
+//-- utils
 import {
   acceptedfriendRequestNotification,
   friendRequestNotification,
 } from "../utils/notificationTypeStrings";
 
+//-- types
+import type { UserNotificationType } from "../context/NotificationContext";
+
+//-- types
 interface UserData {
   username?: string | FormDataEntryValue;
   file?: File | null;
@@ -34,11 +43,14 @@ interface UserData {
   bio?: string | FormDataEntryValue;
   password?: string;
 }
-
 export const friendStatus = {
   pending: "pending",
   accepted: "accepted",
 };
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//-- Update profile actions
 export async function updateProfileAction(
   data: UserData,
   setIsLoading: (value: boolean) => void,
@@ -109,31 +121,43 @@ export async function updateProfileAction(
     setIsLoading(false);
   }
 }
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 //-- ADDING OF USERS as friends
 export async function addFriendAction(username: string) {
   try {
-    //  getting the user id
+    // getting the user id
     const userId = await getUserIdByUsername(username);
 
+    // get user stores obj
     const friend = await getDoc(doc(usersColRef, userId));
-    const isPendingFriendfriend = (await friend.data())?.friends?.find(
-      ({ id }) => id === auth.currentUser?.uid
+    //
+
+    const usersFriendStatusObj = (await friend.data())?.friends?.find(
+      ({ id }: { id: string }) => id === auth.currentUser?.uid
     );
 
-    if (isPendingFriendfriend) {
-      //  add user to the current user friend-list
+    // check they are already friends
+    if (usersFriendStatusObj?.status === friendStatus.accepted)
+      return console.log("You are already friends with this user");
+
+    const userHasSentRequest = !!usersFriendStatusObj;
+
+    if (userHasSentRequest) {
+      //  add user to the currentUsers friend-list
       await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
         friends: arrayUnion({ id: userId, status: friendStatus.accepted }),
       });
 
-      // remove the old status
+      // remove the old status from the user
       await updateDoc(doc(usersColRef, userId), {
         friends: arrayRemove({
           id: auth.currentUser?.uid,
           status: friendStatus.pending,
         }),
       });
-      // add the new  status
+      // add the new  status to the user
       await updateDoc(doc(usersColRef, userId), {
         friends: arrayUnion({
           id: auth.currentUser?.uid,
@@ -147,11 +171,16 @@ export async function addFriendAction(username: string) {
         special: auth.currentUser?.displayName,
         seen: false,
       });
+      await deleteDoc(
+        doc(userNotificationColRef(auth.currentUser?.uid as string), userId)
+      );
     } else {
+      // the user to the currentUsers friend-list
       await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
         friends: arrayUnion({ id: userId, status: friendStatus.pending }),
       });
 
+      // send the user a friend request notifcation
       await setDoc(doc(userNotificationColRef(userId), auth.currentUser?.uid), {
         type: friendRequestNotification,
         message: `${auth.currentUser?.displayName} sent you a friend request`,
@@ -162,10 +191,92 @@ export async function addFriendAction(username: string) {
   } catch (err) {
     console.error("Adding of friends Failed: ", err);
     throw err;
-  } finally {
   }
 }
-// BLOCKING OF USERS
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//-- UNFRIEND/cancel friend request OF USERS
+export async function unFriendAction(username: string) {
+  try {
+    //getting the user id
+    const userId = await getUserIdByUsername(username);
+
+    //  removed user to the current user friend-list
+    const currentUserStoreObj = await getOneUserAction(
+      auth.currentUser?.displayName as string
+    );
+
+    const currendUserfriendObj = await currentUserStoreObj.friends.find(
+      ({ id }: { id: string }) => id === userId
+    );
+
+    // check if currentUser has sent/accpeted the friend request
+    if (!currendUserfriendObj)
+      throw new Error(
+        "You havn't sent this user a friend request OR you havn't accepted this users friend request"
+      );
+
+    // for cancel-friend-request
+    if (currendUserfriendObj.status === friendStatus.pending) {
+      // delete the notification sent to the user
+      await deleteDoc(
+        doc(userNotificationColRef(userId), auth.currentUser?.uid)
+      );
+    } else {
+      // unfriend user
+
+      // change the status of the user friend status
+      await updateDoc(doc(usersColRef, userId), {
+        friends: arrayRemove({
+          id: auth.currentUser?.uid,
+          status: friendStatus.accepted,
+        }),
+      });
+      await updateDoc(doc(usersColRef, userId), {
+        friends: arrayUnion({
+          id: auth.currentUser?.uid,
+          status: friendStatus.pending,
+        }),
+      });
+    }
+
+    // removed the him from my friend-list weather we are friends or not
+    await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
+      friends: arrayRemove(currendUserfriendObj),
+    });
+  } catch (err) {
+    console.error("UnFriending users of USERS Failed: ", err);
+    throw err;
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//-- reject Friend Request Action
+export async function rejectFriendRequestAction(
+  notificationObj: UserNotificationType
+) {
+  const username = notificationObj.special;
+
+  const userId = await getUserIdByUsername(username);
+
+  // remove currentuser from his friends list
+  await updateDoc(doc(usersColRef, userId), {
+    friends: arrayRemove({
+      id: auth.currentUser?.uid,
+      status: friendStatus.pending,
+    }),
+  });
+
+  // delete the notification he sent to me
+  await deleteDoc(
+    doc(userNotificationColRef(auth.currentUser?.uid as string), userId)
+  );
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//-- BLOCKING OF USERS
 export async function blockFriendAction(username: string) {
   try {
     // getting the user id
@@ -180,7 +291,9 @@ export async function blockFriendAction(username: string) {
     throw err;
   }
 }
-// unBLOCKING OF USERS
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//-- UNBLOCKING OF USERS
 export async function unblockFriendAction(username: string) {
   try {
     // getting the user id
@@ -191,59 +304,7 @@ export async function unblockFriendAction(username: string) {
       blocked: arrayRemove(userId),
     });
   } catch (err) {
-    console.error("Blocking of USERS Failed: ", err);
-    throw err;
-  }
-}
-
-//-- UNFRIEND OF USERS
-export async function unFriendAction(username: string) {
-  try {
-    //getting the user id
-
-    const userId = await getUserIdByUsername(username);
-    //  removed user to the current user friend-list
-    const currentUserStoreObj = await getOneUserAction(
-      auth.currentUser?.displayName as string
-    );
-    const friendObj = await currentUserStoreObj.friends.find(
-      ({ id }) => id === userId
-    );
-
-    if (!friendObj) throw new Error("You are not friend the the this user");
-
-    if (friendObj.status === friendStatus.pending) {
-      // delete the notification if he hasnt accepted the request
-      await deleteDoc(
-        doc(userNotificationColRef(userId), auth.currentUser?.uid)
-      );
-    } else if (friendObj.status === friendStatus.accepted) {
-      // removed the me from his friend list if we are friends
-      await updateDoc(doc(usersColRef, userId), {
-        friends: arrayRemove(friendObj),
-      });
-    }
-
-    // removed the him from my friend weather we are friends or not
-    await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
-      friends: arrayRemove(friendObj),
-    });
-
-    // change the status of the our fiendship
-    await updateDoc(doc(usersColRef, userId), {
-      friends: arrayRemove({
-        id: auth.currentUser?.uid,
-        status: friendStatus.pending,
-      }),
-    });
-    await updateDoc(doc(usersColRef, userId), {
-      friends: arrayUnion({
-        id: auth.currentUser?.uid,
-        status: friendStatus.pending,
-      }),
-    });
-  } catch (err) {
-    console.error("UnFriending users of USERS Failed: ", err);
+    console.error("UnBlocking of USERS Failed: ", err);
     throw err;
   }
 }

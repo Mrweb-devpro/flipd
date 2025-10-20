@@ -1,14 +1,20 @@
+import { useEffect } from "react";
 import { MdPersonAdd } from "react-icons/md";
+
+// custom hooks
+import useNotifications from "../../hooks/useNotifications";
+
+// utils
 import {
   acceptedfriendRequestNotification,
   friendRequestNotification,
 } from "../../utils/notificationTypeStrings";
-import useNotifications from "../../hooks/useNotifications";
-import {
-  handleSeenAction,
-  rejectFriendRequestAction,
-} from "../../actions/notificationActions";
-import { useEffect } from "react";
+
+// actions
+import { handleSeenAction } from "../../actions/notificationActions";
+import { rejectFriendRequestAction } from "../../actions/profileAction";
+
+// types
 import type { UserNotificationType } from "../../context/NotificationContext";
 
 export default function NotificationDropDown() {
