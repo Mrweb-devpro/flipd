@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSearchedUsers } from "../hooks/useSearchedUsers";
 import UserIcon from "./icons/UserIcon";
-import { IoAddOutline } from "react-icons/io5";
+// import { IoAddOutline } from "react-icons/io5";
 
 export default function SearchResult() {
   const { data, isLoading } = useSearchedUsers();
@@ -24,10 +24,10 @@ export default function SearchResult() {
               )}
               <h4 className="text-sm font-bold">{userObj.username}</h4>
             </Link>
-            <button type="button">
-              <IoAddOutline />
+            {/* <button type="button">
+              <IoAddOutline / >
               add
-            </button>
+            </button> */}
           </li>
         ))}
       </ul>
