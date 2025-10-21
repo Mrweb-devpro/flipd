@@ -4,7 +4,7 @@ export default function AboutUser({
 }: {
   numOfPosts: number;
 }) {
-  console.log(user);
+  // console.log(user);
   return (
     <ul className="flex flex-col text-stone-600">
       <ListItem title={"Username:"}> {user.username}</ListItem>

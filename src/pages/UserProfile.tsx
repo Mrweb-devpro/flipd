@@ -51,14 +51,14 @@ export default function UserProfile() {
   };
 
   const isBlocked = currentAuthUser?.blocked?.includes(user?.user_id);
-  const isFriends = currentAuthUser?.friends?.some(({ id }) =>
+  const isFriends = currentAuthUser?.friends?.some(({ id }: { id: string }) =>
     id.includes(user?.user_id)
   );
 
-  const isFriendPending = currentAuthUser?.friends?.find(({ id }) =>
-    id.includes(user?.user_id)
+  const isFriendPending = currentAuthUser?.friends?.find(
+    ({ id }: { id: string }) => id.includes(user?.user_id)
   )?.status;
-  const isHisFriendPending = user?.friends?.find(({ id }) =>
+  const isHisFriendPending = user?.friends?.find(({ id }: { id: string }) =>
     id.includes(currentAuthUser?.user_id)
   )?.status;
   //-- Loading page
@@ -81,7 +81,8 @@ export default function UserProfile() {
             <p className="text-center text-stone-600 text-sm">
               {
                 user?.friends?.filter(
-                  (friend) => friend.status === friendStatus.accepted
+                  (friend: { status: string }) =>
+                    friend.status === friendStatus.accepted
                 )?.length
               }{" "}
               friends
@@ -134,7 +135,7 @@ export default function UserProfile() {
                 style={colorObj("post")}
                 className="p-3 underline inline-block underline-offset-8 text-stone-600 decoration-current"
               >
-                Post
+                Posts
               </button>
             </li>
             <li>
@@ -159,29 +160,35 @@ export default function UserProfile() {
               </blockquote>
             ) : (
               <>
-                {allUsersPost.map((post) => (
-                  <blockquote
-                    key={post.time}
-                    className="flex flex-col gap-4 bg-green-200/60 w-full px-4 py-6 rounded-lg border border-transparent hover:border-green-500 "
-                  >
-                    <div className="flex  gap-4">
-                      <img
-                        src={user?.photoURL}
-                        className="w-10 h-10 rounded-full"
-                        alt=""
-                      />
-                      <span className="flex flex-col">
-                        <h3 className="font-bold text-sm">{user.username}</h3>
-                        <p className="text-sm text-green-400">
-                          {new Date(post.time).toDateString()}
-                        </p>
-                      </span>
-                    </div>
-                    <div className="text-stone-600 text-sm leading-6">
-                      {post.content}
-                    </div>
+                {!allUsersPost.length ? (
+                  <blockquote className=" text-stone-400">
+                    No post yet
                   </blockquote>
-                ))}
+                ) : (
+                  allUsersPost.map((post) => (
+                    <blockquote
+                      key={post.time}
+                      className="flex flex-col gap-4 bg-green-200/60 w-full px-4 py-6 rounded-lg border border-transparent hover:border-green-500 "
+                    >
+                      <div className="flex  gap-4">
+                        <img
+                          src={user?.photoURL}
+                          className="w-10 h-10 rounded-full"
+                          alt=""
+                        />
+                        <span className="flex flex-col">
+                          <h3 className="font-bold text-sm">{user.username}</h3>
+                          <p className="text-sm text-green-400">
+                            {new Date(post.time).toDateString()}
+                          </p>
+                        </span>
+                      </div>
+                      <div className="text-stone-600 text-sm leading-6">
+                        {post.content}
+                      </div>
+                    </blockquote>
+                  ))
+                )}
               </>
             )}
           </article>
