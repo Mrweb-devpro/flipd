@@ -10,7 +10,7 @@ import UserProfileButton from "../components/button/UserProfileButton";
 // custom hooks
 import { usePost } from "../hooks/usePost";
 import { useStoreUser } from "../hooks/useStoreUsers";
-import GoBackButton from "../components/button/goBackButton";
+import GoBackButton from "../components/button/GoBackButton";
 import { Suspense, useEffect } from "react";
 import { friendStatus } from "../actions/profileAction";
 
@@ -61,7 +61,6 @@ export default function UserProfile() {
   const isHisFriendPending = user?.friends?.find(({ id }) =>
     id.includes(currentAuthUser?.user_id)
   )?.status;
-  console.log(isHisFriendPending === friendStatus.pending);
   //-- Loading page
   if (isPending) return <Loader />;
 
@@ -81,7 +80,7 @@ export default function UserProfile() {
           {isBlocked || (
             <p className="text-center text-stone-600 text-sm">
               {
-                user?.friends.filter(
+                user?.friends?.filter(
                   (friend) => friend.status === friendStatus.accepted
                 )?.length
               }{" "}

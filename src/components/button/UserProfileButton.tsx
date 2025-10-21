@@ -10,13 +10,14 @@ import {
 import { shareContentAction } from "../../actions/windowsActions";
 
 //-- custom hooks
-import { useStoreUser } from "../../hooks/useStoreUsers";
+// import { useStoreUser } from "../../hooks/useStoreUsers";
 
 //-- components
 import Loader from "../Loader";
 
 //-- types
 import type { DocumentData } from "firebase/firestore";
+import { useStoreUser } from "../../hooks/useStoreUsers";
 
 // types
 type ProfileButtonActionType =

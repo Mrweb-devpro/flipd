@@ -1,6 +1,7 @@
 import {
   doc,
   getDocs,
+  onSnapshot,
   query,
   setDoc,
   where,
@@ -29,6 +30,32 @@ export async function getOneUserAction(
       resolve({ ...doc.data(), user_id: doc.id })
     );
   });
+}
+export async function getOneUserAction2(
+  username: string,
+  fakeReturn: true | false = false,
+  resetState?: (data: DocumentData[] | DocumentData) => void
+) {
+  let fakePromise;
+  const isExistUsernameQuery = query(
+    usersColRef,
+    where("username", "==", username)
+  );
+
+  const unSub = await onSnapshot(isExistUsernameQuery, async (snapshot) => {
+    const resData = await snapshot.docs.map((doc) => ({
+      ...doc.data(),
+      user_id: doc.id,
+    }));
+    const data = Array.isArray(resData) ? resData[0] : resData;
+
+    if (fakeReturn)
+      fakePromise = new Promise((resolve, reject) => resolve(data));
+    if (resetState) await resetState(data);
+    console.log("Refetching");
+  });
+  if (!!resetState) return await unSub;
+  if (fakeReturn) return fakePromise;
 }
 
 //-- geting user id by their username
