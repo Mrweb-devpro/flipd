@@ -1,24 +1,12 @@
-import {
-  useQueries,
-  useQuery,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import {
   getAuthUserFromStoreOption,
   getByUsernameOption,
 } from "../queryOptions/allQueryOptions";
-import { auth } from "../db/firebase";
-import {
-  getOneUserAction,
-  getOneUserAction2,
-} from "../actions/userStoreAction";
-import { useEffect, useRef } from "react";
-import type { Unsubscribe } from "firebase/firestore";
+import { useContext } from "react";
+import { StoreUserContext } from "../context/StoreUserContext";
 
 export function useStoreUser(username?: string) {
-  // useGetStoreUser(username);
-
   return useQueries({
     queries: [
       getByUsernameOption(username as string),
@@ -27,33 +15,43 @@ export function useStoreUser(username?: string) {
   });
 }
 
-export function useGetStoreUser(username?: string) {
-  const queryClient = useQueryClient();
-  const queryUsername = username ? username : auth?.currentUser?.displayName;
-  const unSubRef = useRef<Unsubscribe | undefined>(undefined);
+// export function useGetStoreUser(username?: string) {
+//   const queryClient = useQueryClient();
+//   const queryUsername = username ? username : auth?.currentUser?.displayName;
+//   const unSubRef = useRef<Unsubscribe | undefined>(undefined);
 
-  useEffect(() => {
-    [
-      async () => {
-        unSubRef.current = await getOneUserAction2(
-          queryUsername as string,
-          false,
-          (data) =>
-            queryClient.setQueryData(
-              [username ? username : "authUserStore"],
-              data
-            )
-        );
-      },
-    ][0]();
+//   useEffect(() => {
+//     [
+//       async () => {
+//         unSubRef.current = await getOneUserAction2(
+//           queryUsername as string,
+//           false,
+//           (data) =>
+//             queryClient.setQueryData(
+//               [username ? username : "authUserStore"],
+//               data
+//             )
+//         );
+//       },
+//     ][0]();
 
-    return () => {
-      if (unSubRef.current) unSubRef.current();
-    };
-  });
+//     return () => {
+//       if (unSubRef.current) unSubRef.current();
+//     };
+//   });
 
-  return useQuery({
-    queryKey: [queryUsername],
-    queryFn: async () => await getOneUserAction(queryUsername as string),
-  });
+//   return useQuery({
+//     queryKey: [queryUsername],
+//     queryFn: async () => await getOneUserAction(queryUsername as string),
+//   });
+// }
+
+export function useGetStoreUser() {
+  const context = useContext(StoreUserContext);
+  if (context === null)
+    throw new Error(
+      "❌ StoreUserContext Can't be used outside of its provider"
+    );
+
+  return context;
 }

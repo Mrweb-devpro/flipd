@@ -11,9 +11,10 @@ import Profile from "./pages/Profile";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import Jotter from "./pages/Jotter";
 import { ModalProvider } from "./context/ModalProvider";
-import PageNotfound from "./pages/PageNotfound";
+import PageNotfound from "./pages/PageNotFound";
 import { ErrorBoundary } from "react-error-boundary";
 import NotificationProvider from "./context/NotificationProvider";
+import StoreUserProvider from "./context/StoreUserProvider";
 
 function App() {
   const queryClient = new QueryClient();
@@ -32,11 +33,12 @@ function App() {
             <Route
               path="/"
               element={
-                // <Suspense></Suspense>
                 <ProtectedRoute>
-                  <NotificationProvider>
-                    <Dashboard />
-                  </NotificationProvider>
+                  <StoreUserProvider>
+                    <NotificationProvider>
+                      <Dashboard />
+                    </NotificationProvider>
+                  </StoreUserProvider>
                 </ProtectedRoute>
               }
             >

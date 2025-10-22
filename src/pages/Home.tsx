@@ -11,7 +11,6 @@ import OpenSearchButton from "../components/button/OpenSearchButton";
 import SearchResult from "../components/SearchResult";
 import { Suspense } from "react";
 import Loader from "../components/Loader";
-import { useGetStoreUser } from "../hooks/useStoreUsers";
 
 export default function Home() {
   const { data: user } = useAuthUser();

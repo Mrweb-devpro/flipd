@@ -36,7 +36,7 @@ export async function getOneUserAction(
 export async function getOneUserAction2(
   username: string,
   fakeReturn: true | false = false,
-  resetState?: (data: DocumentData[] | DocumentData) => void
+  resetState?: (data?: DocumentData[] | DocumentData) => void
 ) {
   let fakePromise;
   const isExistUsernameQuery = query(
