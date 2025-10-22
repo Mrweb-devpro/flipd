@@ -8,7 +8,7 @@ interface PostPropsType {
   imgURL?: string;
   post: string;
 }
-
+//
 export default function Post({ time, username, imgURL, post }: PostPropsType) {
   const formatedDate = formatDatePeriod(time);
 
