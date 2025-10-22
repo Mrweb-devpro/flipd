@@ -67,7 +67,7 @@ export default function UserProfile() {
   return (
     <Section>
       <div className=" relative flex flex-col items-center gap-10 p-5 w-full bg-green-50">
-        <GoBackButton />
+        <GoBackButton url="/" />
         <div className="flex flex-col gap-2">
           <img
             src={(isBlocked ? false : user?.photoURL) || testUserImage}
