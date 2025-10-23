@@ -13,6 +13,7 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  query,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -113,6 +114,7 @@ export async function updateProfileAction(
 
     //Update the photoURL and username
     await updateProfile(auth.currentUser as User, newData);
+
     await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
       ...newData,
     });
