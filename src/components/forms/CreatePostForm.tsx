@@ -1,7 +1,9 @@
-import { MdOutlinePostAdd } from "react-icons/md";
-import CloseModalButton from "../modal/CloseModalButton";
 import { useState, type FormEvent } from "react";
+import { MdOutlinePostAdd } from "react-icons/md";
+
+import CloseModalButton from "../modal/CloseModalButton";
 import { createPostAction } from "../../actions/postActions";
+
 import { useModal } from "../../hooks/useModal";
 import { useAuthUser } from "../../hooks/useAuthUser";
 import Loader from "../Loader";

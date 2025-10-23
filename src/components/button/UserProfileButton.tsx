@@ -17,7 +17,6 @@ import Loader from "../Loader";
 
 //-- types
 import type { DocumentData } from "firebase/firestore";
-import { useStoreUser } from "../../hooks/useStoreUsers";
 
 // types
 type ProfileButtonActionType =
@@ -36,7 +35,7 @@ export default function UserProfileButton({
   action: ProfileButtonActionType;
   user: DocumentData;
 }) {
-  const [_, { refetch }] = useStoreUser();
+  // const [_, { refetch }] = useStoreUser();
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleProfileButton() {
@@ -59,7 +58,6 @@ export default function UserProfileButton({
       });
     }
     setIsLoading(false);
-    await refetch();
   }
 
   return (

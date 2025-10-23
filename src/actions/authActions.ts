@@ -19,15 +19,6 @@ export const NoRememberStorageKey = "no-remember-recent-login";
 export function onAuthChangedAction(callback: NextOrObserver<User>) {
   return onAuthStateChanged(auth, callback);
 }
-// export async function onAuthChangedAction(setUser, setIsLoading) {
-//   setIsLoading(true);
-//   return await onAuthStateChanged(auth, (user) => {
-//     if (user) setUser(user);
-//     else setUser(null);
-
-//     setIsLoading(false);
-//   });
-// }
 
 // getAuthUser
 //-- Sign in with google

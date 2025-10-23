@@ -1,6 +1,6 @@
 import { CiLogout } from "react-icons/ci";
-import { logoutAction } from "../../actions/authActions";
 import { useNavigate } from "react-router-dom";
+import { logoutAction } from "../../actions/authActions";
 
 export default function LogoutButton({
   onlyIcon = false,

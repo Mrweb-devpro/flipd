@@ -1,3 +1,4 @@
+import { Suspense, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { BiShare } from "react-icons/bi";
 
@@ -6,12 +7,13 @@ import Section from "../components/Section";
 import AboutUser from "../components/AboutUser";
 import testUserImage from "/src/assets/images/test-user.png";
 import UserProfileButton from "../components/button/UserProfileButton";
+import GoBackButton from "../components/button/GoBackButton";
 
 // custom hooks
 import { usePost } from "../hooks/usePost";
+import { useAuthUserStore } from "../hooks/useAuthUserStore";
 import { useStoreUser } from "../hooks/useStoreUsers";
-import GoBackButton from "../components/button/GoBackButton";
-import { Suspense, useEffect } from "react";
+
 import { friendStatus } from "../actions/profileAction";
 
 //-- Tab variable types
@@ -27,8 +29,9 @@ export default function UserProfile() {
 
   //--  custom_hooks
   const posts = usePost();
-  const [{ data: user, isPending }, authUserStore] = useStoreUser(username);
-  const { data: currentAuthUser } = authUserStore;
+  const { data: user, isPending } = useStoreUser(username as string);
+  const { data: currentAuthUser } = useAuthUserStore();
+  console.log(currentAuthUser);
 
   if (!isPending && !user)
     throw new Error(`The User With The Username: ${username}. Does not exist`);

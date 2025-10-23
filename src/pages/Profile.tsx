@@ -1,20 +1,26 @@
 import { useState, type FormEvent } from "react";
+import { FcCancel } from "react-icons/fc";
+import { BiSave } from "react-icons/bi";
+
 import BioIcon from "../components/icons/BioIcon";
 import EditIcon from "../components/icons/EditIcon";
 import EmailIcon from "../components/icons/EmailIcon";
 import UserIcon from "../components/icons/UserIcon";
-import { FcCancel } from "react-icons/fc";
-import { BiSave } from "react-icons/bi";
-import { updateProfileAction } from "../actions/profileAction";
+
+import type { FirebaseError } from "firebase/app";
+
 import { formatFirbaseError } from "../utils/formatError";
+import { updateProfileAction } from "../actions/profileAction";
+
 import UserDetailCont from "../components/profile/UserDetails";
 import ProfileButton from "../components/profile/ProfileButton";
 import ImageUploader from "../components/ImageUploader";
-import { useAuthUser } from "../hooks/useAuthUser";
-import { useStoreUser } from "../hooks/useStoreUsers";
-import testUserImage from "/src/assets/images/test-user.png";
 import LogoutButton from "../components/button/LogoutButton";
-import type { FirebaseError } from "firebase/app";
+
+import { useAuthUser } from "../hooks/useAuthUser";
+import { useAuthUserStore } from "../hooks/useAuthUserStore";
+
+import testUserImage from "/src/assets/images/test-user.png";
 
 export default function Profile() {
   const [_, setErrorInImg] = useState(false);
@@ -25,7 +31,7 @@ export default function Profile() {
   const [hasEmail, setHasEmail] = useState(false);
 
   const { data: user, refetch } = useAuthUser();
-  const [__, { data: storeUser }] = useStoreUser();
+  const { data: storeUser } = useAuthUserStore();
 
   const iconSize = "24";
 
@@ -117,7 +123,7 @@ export default function Profile() {
           title="Bio"
           isEditMode={isEditMode}
           Icon={<BioIcon size={iconSize} />}
-          content={storeUser?.bio ? storeUser?.bio : "Empty"}
+          content={storeUser?.bio ? (storeUser?.bio as string) : "Empty"}
         />
 
         <li className="w-52 self-center ">

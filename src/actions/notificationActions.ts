@@ -9,9 +9,9 @@ import { auth, userNotificationColRef } from "../db/firebase";
 
 //-- actions
 import { getUserIdByUsername } from "./userStoreAction";
+import type { UserNotificationType } from "../types/DatabaseTypes";
 
 //-- types
-import type { UserNotificationType } from "../context/NotificationContext";
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

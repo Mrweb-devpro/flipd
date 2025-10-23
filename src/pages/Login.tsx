@@ -1,3 +1,7 @@
+// React
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 // utils
 import { formatFirbaseError } from "../utils/formatError";
 
@@ -14,10 +18,6 @@ import EmailIcon from "../components/icons/EmailIcon";
 import Section from "../components/Section";
 import OrLine from "../components/OrLine";
 import Nav from "../components/Nav";
-
-// React
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
 
 //custom hooks
 import { useAuthUser } from "../hooks/useAuthUser";

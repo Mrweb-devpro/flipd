@@ -1,12 +1,8 @@
-import type { Unsubscribe } from "firebase/firestore";
 import { createContext } from "react";
 
-export interface UserNotificationType {
-  type: string;
-  message: string;
-  seen: boolean;
-  special: /*unresolved*/ any;
-}
+import type { Unsubscribe } from "firebase/firestore";
+import type { UserNotificationType } from "../types/DatabaseTypes";
+
 export interface NotificationContextType {
   toggleDropDown: (actionType: "open" | "close") => void;
   notifications: UserNotificationType[] | undefined | Unsubscribe;

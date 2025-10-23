@@ -1,24 +1,24 @@
-import GithubAuthButton from "../components/button/GithubAuthButton";
-import GoogleAuthButton from "../components/button/GoogleAuthButton";
-import PasswordIcon from "../components/icons/PasswordIcon";
-import EmailIcon from "../components/icons/EmailIcon";
-import Nav from "../components/Nav";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BsInfoSquare } from "react-icons/bs";
+
+import Nav from "../components/Nav";
+import OrLine from "../components/OrLine";
+import Section from "../components/Section";
+import HaveAccount from "../components/HaveAccount";
+import FormInput from "../components/input/FormInput";
+import FormTextarea from "../components/FormTextarea";
+import EmailIcon from "../components/icons/EmailIcon";
+import SignUpForm from "../components/forms/SignUpForm";
+import UsernameIcon from "../components/icons/UsernameIcon";
+import PasswordIcon from "../components/icons/PasswordIcon";
+import FormRememberMe from "../components/input/FormRememberMe";
+import GithubAuthButton from "../components/button/GithubAuthButton";
+import GoogleAuthButton from "../components/button/GoogleAuthButton";
+import AuthSubmitButton from "../components/button/AuthSubmitButton";
 
 import { formatFirbaseError } from "../utils/formatError";
-import Section from "../components/Section";
-import FormInput from "../components/input/FormInput";
-import FormRememberMe from "../components/input/FormRememberMe";
-import UsernameIcon from "../components/icons/UsernameIcon";
-import AuthSubmitButton from "../components/button/AuthSubmitButton";
-import OrLine from "../components/OrLine";
-import SignUpForm from "../components/forms/SignUpForm";
-import HaveAccount from "../components/HaveAccount";
 import { useAuthUser } from "../hooks/useAuthUser";
-import FormTextarea from "../components/FormTextarea";
-import { BsInfoSquare } from "react-icons/bs";
 
 export interface ErrorType {
   username?: string;

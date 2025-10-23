@@ -33,7 +33,7 @@ export async function getOneUserAction(
   });
 }
 //-- testing function
-export async function getOneUserAction2(
+export async function getOneUserSnapshotAction(
   username: string,
   fakeReturn: true | false = false,
   resetState?: (data?: DocumentData[] | DocumentData) => void

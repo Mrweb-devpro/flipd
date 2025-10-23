@@ -1,11 +1,6 @@
 import { createContext } from "react";
+import type { PostsType } from "../types/DatabaseTypes";
 
-export type PostsType = {
-  sender: string;
-  time: string;
-  userId: string;
-  content: "";
-}[];
 export const initialState: PostsType = [];
 
-export const PostContext = createContext(initialState);
+export const PostContext = createContext<typeof initialState>(initialState);

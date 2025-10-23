@@ -1,10 +1,11 @@
-import { StoreUserContext } from "./StoreUserContext";
+import { AuthUserStoreContext } from "./AuthUserStoreContext";
 import { useEffect, useRef, useState } from "react";
 import { auth } from "../db/firebase";
 import { type Unsubscribe } from "firebase/auth";
-import { getOneUserAction2 } from "../actions/userStoreAction";
+import { getOneUserSnapshotAction } from "../actions/userStoreAction";
+import type { StoreUserType } from "../types/DatabaseTypes";
 
-export default function StoreUserProvider({
+export default function AuthUserStoreProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -12,13 +13,13 @@ export default function StoreUserProvider({
   const username = "";
   const queryUsername = username ? username : auth?.currentUser?.displayName;
   const unSubRef = useRef<Unsubscribe | undefined>(undefined);
-  const [queryData, setQueryData] = useState({});
+  const [queryData, setQueryData] = useState<StoreUserType | {}>({});
 
   useEffect(() => {
     [
       async () => {
         try {
-          getOneUserAction2(queryUsername as string, false, (data) =>
+          getOneUserSnapshotAction(queryUsername as string, false, (data) =>
             setQueryData(data as any)
           );
         } finally {
@@ -30,11 +31,10 @@ export default function StoreUserProvider({
       if (unSubRef.current) unSubRef.current();
     };
   }, []);
-  console.log(queryData);
 
   return (
-    <StoreUserContext.Provider value={{ data: queryData }}>
+    <AuthUserStoreContext.Provider value={{ data: queryData as StoreUserType }}>
       {children}
-    </StoreUserContext.Provider>
+    </AuthUserStoreContext.Provider>
   );
 }

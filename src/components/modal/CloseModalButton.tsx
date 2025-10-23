@@ -1,5 +1,5 @@
-import { useModal } from "../../hooks/useModal";
 import { IoClose } from "react-icons/io5";
+import { useModal } from "../../hooks/useModal";
 
 export default function CloseModalButton({
   children,

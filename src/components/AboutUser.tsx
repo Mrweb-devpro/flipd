@@ -7,7 +7,6 @@ export default function AboutUser({
   numOfPosts: number;
   user: { username: string; bio: string; createdAt: string } | DocumentData;
 }) {
-  // console.log(user);
   return (
     <ul className="flex flex-col text-stone-600">
       <ListItem title={"Username:"}> {user.username}</ListItem>

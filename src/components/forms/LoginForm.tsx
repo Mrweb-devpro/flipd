@@ -1,8 +1,9 @@
+import type { Dispatch, SetStateAction } from "react";
 import * as z from "zod";
+
 import { loginAction } from "../../actions/authActions";
 import { formatZodErrors } from "../../utils/formatError";
 import { useAuthUser } from "../../hooks/useAuthUser";
-import type { Dispatch, SetStateAction } from "react";
 
 const LoginSchema = z.object({
   email: z.string("Invalid Email").email(),
@@ -54,11 +55,3 @@ export default function LoginForm({
     </form>
   );
 }
-
-// const formAction = (formData: formData) => {
-//   console.log(FormData.get("email"));
-//   const email = FormDataObj.get("email");
-//   const password = FormDataObj.get("password");
-//   const remember = !!FormDataObj.get("remember");
-//   console.log(email, password, remember);
-// };

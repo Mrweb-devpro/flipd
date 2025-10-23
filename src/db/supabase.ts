@@ -1,13 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
+import {
+  VITE_DEFAULT_PHOTO_URL,
+  VITE_SUPABASE_ANON_KEY,
+  VITE_SUPABASE_URL,
+} from "../utils/Config";
 
-const supabaseURL = "https://dqalzfbrqampcziqspbk.supabase.co";
-const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxYWx6ZmJycWFtcGN6aXFzcGJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxNTMwMTksImV4cCI6MjA3NDcyOTAxOX0.-B1EkUC8fLL2u5pMXfBARWYKingKj5L-XAHIkW8-M90";
+export const supabase = createClient(VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY);
 
-export const supabase = createClient(supabaseURL, supabaseAnonKey);
-
-export const DEFAULT_PHOTO_URL =
-  "https://dqalzfbrqampcziqspbk.supabase.co/storage/v1/object/public/avatars/users_avatars/test-user.png";
+export const DEFAULT_PHOTO_URL = VITE_DEFAULT_PHOTO_URL;
 
 export async function UploadProfileImageSupabase(
   file: File,
@@ -27,7 +27,6 @@ export async function UploadProfileImageSupabase(
     .upload(`users_avatars/${uid}`, file, {
       upsert: true,
     });
-  // console.log(data);
 
   if (error) {
     throw new Error("Upload failed: " + error.message);

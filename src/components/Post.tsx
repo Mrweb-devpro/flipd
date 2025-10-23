@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
+
 import UserIcon from "./icons/UserIcon";
 import { formatDatePeriod } from "../utils/formatDate";
 
 interface PostPropsType {
   time: string;
   username: string;
-  imgURL?: string;
   post: string;
 }
 //
-export default function Post({ time, username, imgURL, post }: PostPropsType) {
+export default function Post({ time, username, post }: PostPropsType) {
+  const imgURL = "";
   const formatedDate = formatDatePeriod(time);
 
   return (

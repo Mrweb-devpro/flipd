@@ -1,9 +1,10 @@
-import type React from "react";
-import { NotificationContext } from "./NotificationContext";
 import { useEffect, useRef, useState } from "react";
-import { getUserNotifications } from "../actions/notificationActions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import type { DocumentData, Unsubscribe } from "firebase/firestore";
+
+import { NotificationContext } from "./NotificationContext";
+import { getUserNotifications } from "../actions/notificationActions";
 
 export default function NotificationProvider({
   children,

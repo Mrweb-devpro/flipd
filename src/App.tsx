@@ -1,27 +1,27 @@
 import "@fontsource/kode-mono/400.css"; // Defaults to weight 400
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import UserProfile from "./pages/UserProfile";
-import Dashboard from "./pages/Dashboard";
-import SignUp from "./pages/SignUp";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Profile from "./pages/Profile";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import Jotter from "./pages/Jotter";
-import { ModalProvider } from "./context/ModalProvider";
-import PageNotfound from "./pages/PageNotFound";
 import { ErrorBoundary } from "react-error-boundary";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import Jotter from "./pages/Jotter";
+import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
+import UserProfile from "./pages/UserProfile";
+import PageNotfound from "./pages/PageNotFound";
+import ProtectedRoute from "./pages/ProtectedRoute";
+
+import { ModalProvider } from "./context/ModalProvider";
 import NotificationProvider from "./context/NotificationProvider";
-import StoreUserProvider from "./context/StoreUserProvider";
+import AuthUserStoreProvider from "./context/AuthUserStoreProvider";
 
 function App() {
   const queryClient = new QueryClient();
 
   return (
-    // <AuthProvider>
-
     <QueryClientProvider client={queryClient}>
       <ModalProvider>
         <BrowserRouter>
@@ -34,11 +34,11 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <StoreUserProvider>
+                  <AuthUserStoreProvider>
                     <NotificationProvider>
                       <Dashboard />
                     </NotificationProvider>
-                  </StoreUserProvider>
+                  </AuthUserStoreProvider>
                 </ProtectedRoute>
               }
             >
@@ -62,7 +62,6 @@ function App() {
         </BrowserRouter>
       </ModalProvider>
     </QueryClientProvider>
-    // </AuthProvider>
   );
 }
 

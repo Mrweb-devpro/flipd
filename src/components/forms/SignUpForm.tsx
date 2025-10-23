@@ -1,7 +1,8 @@
+import type { Dispatch, SetStateAction } from "react";
 import * as z from "zod";
+
 import { SignUpAction } from "../../actions/authActions";
 import { formatZodErrors } from "../../utils/formatError";
-import type { Dispatch, SetStateAction } from "react";
 
 const SignUpSchema = z
   .object({
@@ -74,11 +75,3 @@ export default function SignUpForm({
     </form>
   );
 }
-
-// const formAction = (formData: formData) => {
-//   console.log(FormData.get("email"));
-//   const email = FormDataObj.get("email");
-//   const password = FormDataObj.get("password");
-//   const remember = !!FormDataObj.get("remember");
-//   console.log(email, password, remember);
-// };

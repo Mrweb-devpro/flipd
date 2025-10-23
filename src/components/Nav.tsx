@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
-import Logo from "./Logo";
-import LogoutButton from "./button/LogoutButton";
-import { useAuthUser } from "../hooks/useAuthUser";
-import type { User } from "firebase/auth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import type { User } from "firebase/auth";
+
+import { useAuthUser } from "../hooks/useAuthUser";
+
+import LogoutButton from "./button/LogoutButton";
 import testUserImage from "/src/assets/images/test-user.png";
 import NotificationBellButton from "./notifications/NotificationBellButton";
+import Logo from "./Logo";
 
 export default function Nav() {
   const { data: user } = useAuthUser();

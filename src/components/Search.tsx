@@ -1,9 +1,9 @@
-import { BiSearch } from "react-icons/bi";
-import { useSearchedUsers } from "../hooks/useSearchedUsers";
 import { type FormEvent } from "react";
+import { BiSearch } from "react-icons/bi";
+
+import { useSearchedUsers } from "../hooks/useSearchedUsers";
 
 export default function Search() {
-  // const [search, setSearch] = useState("");
   const { search: searchUsers } = useSearchedUsers();
 
   const handlesubmit = (e: FormEvent) => {

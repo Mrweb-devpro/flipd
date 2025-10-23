@@ -13,8 +13,6 @@ export default function UserDetailCont({
   Icon: React.ReactNode;
   handleChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }) {
-  // console.log(value);
-  // const [inpValue, setInpValue] = useState(content);
   const idAndName = title.toLowerCase();
 
   return (

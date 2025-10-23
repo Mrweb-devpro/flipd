@@ -1,4 +1,5 @@
 //-- Database
+import { UploadProfileImageSupabase } from "../db/supabase";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -6,7 +7,6 @@ import {
   verifyBeforeUpdateEmail,
   type User,
 } from "firebase/auth";
-import { UploadProfileImageSupabase } from "../db/supabase";
 import {
   arrayRemove,
   arrayUnion,
@@ -32,7 +32,7 @@ import {
 } from "../utils/notificationTypeStrings";
 
 //-- types
-import type { UserNotificationType } from "../context/NotificationContext";
+import type { UserNotificationType } from "../types/DatabaseTypes";
 
 //-- types
 interface UserData {

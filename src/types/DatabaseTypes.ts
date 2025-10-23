@@ -1,0 +1,28 @@
+//--  POSTS
+export type PostsType = {
+  sender: string;
+  time: string;
+  userId: string;
+  content: "";
+}[];
+
+//--  USERS
+export interface StoreUserType {
+  bio: string;
+  blocked: string[];
+  createdAt: string;
+  friends: { status: string; id: string }[];
+  photoURL: null | string;
+  post: string[];
+  settings: {};
+  user_id: string;
+  username: string;
+}
+
+//--  NOTIFICAIONS
+export interface UserNotificationType {
+  type: string;
+  message: string;
+  seen: boolean;
+  special: /*unresolved*/ any;
+}

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
+
 import { useSearchedUsers } from "../hooks/useSearchedUsers";
 import UserIcon from "./icons/UserIcon";
-// import { IoAddOutline } from "react-icons/io5";
 
 export default function SearchResult() {
   const { data } = useSearchedUsers();

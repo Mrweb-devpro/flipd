@@ -1,7 +1,8 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { onAuthChangedAction } from "../actions/authActions";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 import type { User } from "firebase/auth";
+import { onAuthChangedAction } from "../actions/authActions";
 
 export function useAuthUser() {
   const queryClient = useQueryClient();

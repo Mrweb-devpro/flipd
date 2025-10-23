@@ -1,7 +1,7 @@
 import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { auth, postDocRef, usersColRef } from "../db/firebase";
 import type { Dispatch, SetStateAction } from "react";
-import type { PostsType } from "../context/PostContext";
+import type { PostsType } from "../types/DatabaseTypes";
 
 export async function createPostAction(postData: {
   sender: string;

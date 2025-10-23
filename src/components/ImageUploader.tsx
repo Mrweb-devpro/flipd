@@ -1,6 +1,6 @@
 import type { Dispatch, MouseEventHandler, SetStateAction } from "react";
-import { useFileReader } from "../hooks/useFileReader";
 import { DEFAULT_PHOTO_URL } from "../db/supabase";
+import { useFileReader } from "../hooks/useFileReader";
 import { useAuthUser } from "../hooks/useAuthUser";
 
 import testUserImage from "/src/assets/images/test-user.png";
@@ -21,9 +21,7 @@ export default function ImageUploader({
   const handleClearImage: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    console.log(user?.photoURL);
     if (isDefaultPhoto) return;
-    console.log("Is not default photo");
     const fakeFile = new File(["lmsm"], "fake_file", {
       type: "image/jpg",
     });

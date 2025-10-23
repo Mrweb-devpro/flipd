@@ -1,18 +1,49 @@
-import { useQueries } from "@tanstack/react-query";
-import {
-  getAuthUserFromStoreOption,
-  getByUsernameOption,
-} from "../queryOptions/allQueryOptions";
-// import { useContext } from "react";
-// import { StoreUserContext } from "../context/StoreUserContext";
+import { useEffect, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useStoreUser(username?: string) {
-  return useQueries({
-    queries: [
-      getByUsernameOption(username as string),
-      getAuthUserFromStoreOption(),
-    ],
+import type { Unsubscribe } from "firebase/firestore";
+
+import {
+  getOneUserAction,
+  getOneUserSnapshotAction,
+} from "../actions/userStoreAction";
+
+// export function useStoreUser(username?: string) {
+//   return useQueries({
+//     queries: [
+//       getByUsernameOption(username as string),
+//       // getAuthUserFromStoreOption(),
+//     ],
+//   });
+// }
+
+export function useStoreUser(username: string) {
+  const queryClient = useQueryClient();
+  const unSubRef = useRef<Unsubscribe | undefined>(null);
+
+  const query = useQuery({
+    queryKey: [username],
+    queryFn: async () => await getOneUserAction(username),
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      unSubRef.current = await getOneUserSnapshotAction(
+        username,
+        false,
+        (data) => {
+          queryClient.setQueryData([username], data);
+        }
+      );
+    };
+    fetchData();
+
+    return () => {
+      if (unSubRef.current) unSubRef.current();
+    };
+  }, []);
+
+  return query;
 }
 
 // export function useGetStoreUser(username?: string) {
@@ -46,8 +77,6 @@ export function useStoreUser(username?: string) {
 //   });
 // }
 
-//////////////////////////////
-//////////////////////////////
 // export function useGetStoreUser() {
 //   const context = useContext(StoreUserContext);
 //   if (context === null)
