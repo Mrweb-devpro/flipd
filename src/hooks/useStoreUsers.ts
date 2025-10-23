@@ -3,8 +3,8 @@ import {
   getAuthUserFromStoreOption,
   getByUsernameOption,
 } from "../queryOptions/allQueryOptions";
-import { useContext } from "react";
-import { StoreUserContext } from "../context/StoreUserContext";
+// import { useContext } from "react";
+// import { StoreUserContext } from "../context/StoreUserContext";
 
 export function useStoreUser(username?: string) {
   return useQueries({
@@ -46,12 +46,14 @@ export function useStoreUser(username?: string) {
 //   });
 // }
 
-export function useGetStoreUser() {
-  const context = useContext(StoreUserContext);
-  if (context === null)
-    throw new Error(
-      "❌ StoreUserContext Can't be used outside of its provider"
-    );
+//////////////////////////////
+//////////////////////////////
+// export function useGetStoreUser() {
+//   const context = useContext(StoreUserContext);
+//   if (context === null)
+//     throw new Error(
+//       "❌ StoreUserContext Can't be used outside of its provider"
+//     );
 
-  return context;
-}
+//   return context;
+// }

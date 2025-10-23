@@ -170,7 +170,7 @@ export async function addFriendAction(username: string) {
 
       await setDoc(doc(userNotificationColRef(userId), auth.currentUser?.uid), {
         type: acceptedfriendRequestNotification,
-        message: `${auth.currentUser?.displayName} Accpeted your a friend request`,
+        message: `Accpeted your a friend request`,
         special: auth.currentUser?.displayName,
         seen: false,
       });
