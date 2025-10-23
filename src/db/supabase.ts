@@ -1,13 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
-import {
-  VITE_DEFAULT_PHOTO_URL,
-  VITE_SUPABASE_ANON_KEY,
-  VITE_SUPABASE_URL,
-} from "../utils/Config";
 
-export const supabase = createClient(VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY);
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
-export const DEFAULT_PHOTO_URL = VITE_DEFAULT_PHOTO_URL;
+export const DEFAULT_PHOTO_URL = import.meta.env.VITE_DEFAULT_PHOTO_URL;
 
 export async function UploadProfileImageSupabase(
   file: File,

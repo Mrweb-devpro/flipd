@@ -13,6 +13,7 @@ import CloseModalButton from "../components/modal/CloseModalButton";
 import CreatePostButton from "../components/button/CreatePostButton";
 import OpenSearchButton from "../components/button/OpenSearchButton";
 import Loader from "../components/Loader";
+import UserIcon from "../components/icons/UserIcon";
 
 export default function Home() {
   const { data: user } = useAuthUser();
@@ -54,13 +55,38 @@ export default function Home() {
 
       {!posts.length ||
         posts.map((post) => (
-          <Post
-            key={post.time}
-            time={post.time}
-            post={post.content}
-            username={post.sender}
-          />
+          <Suspense fallback={<PostCardSkeleton />}>
+            <Post
+              key={post.time}
+              time={post.time}
+              post={post.content}
+              username={post.sender}
+            />
+          </Suspense>
         ))}
     </main>
+  );
+}
+function PostCardSkeleton() {
+  return (
+    <div className="relative w-full">
+      <span className="absolute top-1/2 left-1/2 -translate-1/2">
+        <Loader.MiniLoader color="var(--main)" />
+      </span>
+      <div className=" flex flex-col gap-6 border-[1.5px] border-[var(--main)] p-3 rounded-xl w-full bg-green-200 animate-pulse blur-[2.5px]">
+        <span className="flex justify-between items-center gap-4">
+          <i className="flex items-center gap-2">
+            <UserIcon size="30" />
+
+            <strong>
+              <i className="text-stone-600">username</i>
+            </strong>
+          </i>
+
+          <p className="text-stone-500 text-xs">formatedDate</p>
+        </span>
+        <p className="text-stone-600">post</p>
+      </div>
+    </div>
   );
 }

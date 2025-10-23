@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 
 import type { Unsubscribe } from "firebase/firestore";
 
@@ -21,7 +21,7 @@ export function useStoreUser(username: string) {
   const queryClient = useQueryClient();
   const unSubRef = useRef<Unsubscribe | undefined>(null);
 
-  const query = useQuery({
+  const query = useSuspenseQuery({
     queryKey: [username],
     queryFn: async () => await getOneUserAction(username),
   });
