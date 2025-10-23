@@ -27,7 +27,7 @@ export default function Nav() {
           <li>
             <span className="flex items-center justify-between gap-4">
               <Link to="/profile" className="flex items-center gap-2">
-                <h2 className="hidden md:inline-block">{user.displayName}</h2>
+                <h2 className="hidden md:inline-block">{user?.displayName}</h2>
                 <img
                   loading="eager"
                   src={showFallbackImage ? testUserImage : user?.photoURL}

@@ -1,4 +1,5 @@
-import { createContext, type Context } from "react";
+import type { Unsubscribe } from "firebase/firestore";
+import { createContext } from "react";
 
 export interface UserNotificationType {
   type: string;
@@ -6,12 +7,11 @@ export interface UserNotificationType {
   seen: boolean;
   special: /*unresolved*/ any;
 }
-interface NotificationContextType {
+export interface NotificationContextType {
   toggleDropDown: (actionType: "open" | "close") => void;
-  notifications: UserNotificationType[];
+  notifications: UserNotificationType[] | undefined | Unsubscribe;
+  isOpen: boolean;
 }
 
-const initialState: NotificationContextType | null = null;
-
-export const NotificationContext: Context<typeof initialState> =
-  createContext(initialState);
+export const NotificationContext =
+  createContext<NotificationContextType | null>(null);

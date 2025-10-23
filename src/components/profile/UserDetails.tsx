@@ -1,4 +1,4 @@
-import type { ChangeEventHandler } from "react";
+import type { ChangeEvent } from "react";
 
 export default function UserDetailCont({
   title,
@@ -11,7 +11,7 @@ export default function UserDetailCont({
   content: string;
   isEditMode?: boolean;
   Icon: React.ReactNode;
-  handleChange?: ChangeEventHandler;
+  handleChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }) {
   // console.log(value);
   // const [inpValue, setInpValue] = useState(content);

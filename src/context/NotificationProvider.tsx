@@ -12,7 +12,7 @@ export default function NotificationProvider({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
-  const cleanUpRef = useRef<Unsubscribe | []>(null);
+  const cleanUpRef = useRef<Unsubscribe | null>(null);
 
   const { data: notifications } = useQuery({
     queryKey: ["notifications"],
@@ -26,9 +26,9 @@ export default function NotificationProvider({
 
   useEffect(() => {
     const fetchData = async () => {
-      cleanUpRef.current = await getUserNotifications((data: DocumentData[]) =>
+      cleanUpRef.current = (await getUserNotifications((data: DocumentData[]) =>
         queryClient.setQueryData(["notifications"], data)
-      );
+      )) as Unsubscribe;
     };
     fetchData();
     return () => {

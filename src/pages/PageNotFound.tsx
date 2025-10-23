@@ -1,12 +1,10 @@
-import { useParams } from "react-router-dom";
 import image404 from "/src/assets/icons/404.svg";
-import GoBackButton from "../components/button/goBackButton";
+import GoBackButton from "../components/button/GoBackButton";
 
 type NotFoundType = "User-Not-Found";
 
 export default function PageNotfound({
   type,
-  contentElement,
 }: {
   type?: NotFoundType;
   contentElement?: React.ReactNode;
@@ -24,7 +22,6 @@ export default function PageNotfound({
 }
 
 function UserNotFound() {
-  const { username } = useParams();
   return (
     <h1 className="text-center text-sm w-3/4 capitalize text-green-800 flex flex-col gap-2">
       <strong>

@@ -1,8 +1,9 @@
+import type { MouseEventHandler } from "react";
 import { signInWithGithub } from "../../actions/authActions";
 import { BsGithub } from "react-icons/bs";
 
 export default function GithubAuthButton() {
-  const handleClick = (e) => {
+  const handleClick: MouseEventHandler = (e) => {
     e.preventDefault();
     signInWithGithub();
   };

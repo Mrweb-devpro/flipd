@@ -1,8 +1,11 @@
+import type { DocumentData } from "firebase/firestore";
+
 export default function AboutUser({
   user,
   numOfPosts,
 }: {
   numOfPosts: number;
+  user: { username: string; bio: string; createdAt: string } | DocumentData;
 }) {
   // console.log(user);
   return (

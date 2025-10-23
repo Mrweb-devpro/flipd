@@ -4,9 +4,12 @@ import useNotifications from "../../hooks/useNotifications";
 export default function NotificationBellButton() {
   const { toggleDropDown, notifications } = useNotifications();
 
-  const numberOfUnRead = notifications?.reduce((prev, curr) => {
-    if (!curr.seen) return ++prev;
-  }, 0);
+  const numberOfUnRead = notifications?.reduce(
+    (prev: number, curr: { seen: any }) => {
+      if (!curr.seen) return ++prev;
+    },
+    0
+  );
 
   return (
     <button

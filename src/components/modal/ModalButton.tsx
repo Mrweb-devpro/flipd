@@ -1,3 +1,4 @@
+import type { ModalNameSpace } from "../../context/ModalContext";
 import { useModal } from "../../hooks/useModal";
 
 export default function ModalButton({
@@ -6,7 +7,7 @@ export default function ModalButton({
   className,
 }: {
   children: React.ReactNode;
-  name: string;
+  name: ModalNameSpace;
   className: string;
 }) {
   const { setIsOpen } = useModal();

@@ -4,8 +4,7 @@ import UserIcon from "./icons/UserIcon";
 // import { IoAddOutline } from "react-icons/io5";
 
 export default function SearchResult() {
-  const { data, isLoading } = useSearchedUsers();
-  console.log(data);
+  const { data } = useSearchedUsers();
   return (
     <>
       <h2>Search Result ({data.length})</h2>

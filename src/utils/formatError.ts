@@ -2,11 +2,11 @@ import type { FirebaseError } from "firebase/app";
 import type { ZodError } from "zod";
 
 export function formatFirbaseError(error: FirebaseError) {
-  const newMessage = error?.message
-    ?.slice(17, -2)
-    .replaceAll("/", " ")
-    .replace("auth", "")
-    .replaceAll("-", " ");
+  // const newMessage = error?.message
+  //   ?.slice(17, -2)
+  //   .replaceAll("/", " ")
+  //   .replace("auth", "")
+  //   .replaceAll("-", " ");
 
   const errorCodeMessage = error?.code?.split("/").at(-1)?.replaceAll("-", " ");
 

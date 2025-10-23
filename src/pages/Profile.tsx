@@ -17,15 +17,15 @@ import LogoutButton from "../components/button/LogoutButton";
 import type { FirebaseError } from "firebase/app";
 
 export default function Profile() {
-  const [errorInImg, setErrorInImg] = useState(false);
+  const [_, setErrorInImg] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<FirebaseError | string>("");
   const [hasEmail, setHasEmail] = useState(false);
 
   const { data: user, refetch } = useAuthUser();
-  const [_, { data: storeUser }] = useStoreUser();
+  const [__, { data: storeUser }] = useStoreUser();
 
   const iconSize = "24";
 
@@ -122,7 +122,7 @@ export default function Profile() {
 
         <li className="w-52 self-center ">
           <i className="w-34 text-red-500 text-xs ">
-            {formatFirbaseError(error)}
+            {formatFirbaseError(error as FirebaseError)}
           </i>
         </li>
 

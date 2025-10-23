@@ -16,12 +16,12 @@ export default function ImageUploader({
   const { data: user } = useAuthUser();
 
   const isDefaultPhoto =
-    user.photoURL?.includes(DEFAULT_PHOTO_URL) || file?.name === "fake_file";
+    user?.photoURL?.includes(DEFAULT_PHOTO_URL) || file?.name === "fake_file";
 
   const handleClearImage: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    console.log(user.photoURL);
+    console.log(user?.photoURL);
     if (isDefaultPhoto) return;
     console.log("Is not default photo");
     const fakeFile = new File(["lmsm"], "fake_file", {
@@ -38,7 +38,7 @@ export default function ImageUploader({
   return (
     <>
       <img
-        src={user.photoURL || testUserImage}
+        src={user?.photoURL || testUserImage}
         alt="The imge yu"
         ref={imageRef}
         className="md:w-26 w-16 md:h-26 h-16 rounded-lg"
@@ -47,7 +47,7 @@ export default function ImageUploader({
       <span className="flex flex-col gap-2">
         <p>
           {file?.name === "fake_file" ||
-            (file?.name?.length > 14
+            ((file?.name?.length || 0) > 14
               ? `${file?.name.slice(0, 14)}...`
               : file?.name)}
         </p>

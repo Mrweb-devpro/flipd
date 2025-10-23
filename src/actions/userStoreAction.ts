@@ -51,8 +51,7 @@ export async function getOneUserAction2(
     }));
     const data = Array.isArray(resData) ? resData[0] : resData;
 
-    if (fakeReturn)
-      fakePromise = new Promise((resolve, reject) => resolve(data));
+    if (fakeReturn) fakePromise = new Promise((resolve) => resolve(data));
     if (resetState) await resetState(data);
     console.log("Refetching");
   });
@@ -110,7 +109,7 @@ export async function checkIfUsernameExist(
 
 //-- searching for users by user
 export async function searchForUsersByUsername(searchQuery: string) {
-  const usersArr: {}[] = [];
+  const usersArr: { [key: string]: any }[] = [];
   const querySnap = await getDocs(usersColRef);
 
   if (!searchQuery) {

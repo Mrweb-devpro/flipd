@@ -36,11 +36,11 @@ import type { UserNotificationType } from "../context/NotificationContext";
 
 //-- types
 interface UserData {
-  username?: string | FormDataEntryValue;
+  username?: string;
   file?: File | null;
-  photoURL?: string | FormDataEntryValue;
+  photoURL?: string;
   email?: string;
-  bio?: string | FormDataEntryValue;
+  bio?: string;
   password?: string;
 }
 export const friendStatus = {
@@ -60,15 +60,18 @@ export async function updateProfileAction(
     displayName?: string;
     photoURL?: string;
     bio?: UserData["bio"];
+    email?: string;
+    username?: string;
   } = {};
   // Clear Error
   setError("");
 
-  await Object.keys(data).forEach((key) => {
+  await (Object.keys(data) as (keyof UserData)[]).forEach((key) => {
     if (!data[key]) return;
 
     if (key === "username" || key === "email" || key === "file") {
-      if (key === "username") return (newData.displayName = data[key]);
+      if (key === "username" && typeof data[key] === "string")
+        return (newData.displayName = data[key]);
       if (key === "file") return;
       return (newData[key] = data[key]);
     }

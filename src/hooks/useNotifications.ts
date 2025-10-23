@@ -7,5 +7,5 @@ export default function useNotifications() {
     throw new Error(
       "Notification context must not be used outside of its provider"
     );
-  return context;
+  return context as any;
 }

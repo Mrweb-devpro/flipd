@@ -1,5 +1,7 @@
 import { createContext } from "react";
 
-const initialState = null;
+export interface StoreUserType {
+  data: { [key: string]: boolean | string };
+}
 
-export const StoreUserContext = createContext(initialState);
+export const StoreUserContext = createContext<StoreUserType | null>(null);

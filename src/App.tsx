@@ -1,4 +1,4 @@
-import "@fontsource/kode-mono"; // Defaults to weight 400
+import "@fontsource/kode-mono/400.css"; // Defaults to weight 400
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";

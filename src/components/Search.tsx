@@ -4,11 +4,13 @@ import { type FormEvent } from "react";
 
 export default function Search() {
   // const [search, setSearch] = useState("");
-  const { data, search: searchUsers } = useSearchedUsers();
+  const { search: searchUsers } = useSearchedUsers();
 
   const handlesubmit = (e: FormEvent) => {
     e.preventDefault();
-    const search = new FormData(e.currentTarget).get("search");
+    const search = new FormData(
+      e.currentTarget as HTMLFormElement | undefined
+    ).get("search");
     searchUsers(search as string);
   };
 

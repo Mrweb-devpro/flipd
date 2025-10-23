@@ -1,7 +1,6 @@
 import { CiLogout } from "react-icons/ci";
 import { logoutAction } from "../../actions/authActions";
 import { useNavigate } from "react-router-dom";
-import type { FormEvent, MouseEventHandler } from "react";
 
 export default function LogoutButton({
   onlyIcon = false,
