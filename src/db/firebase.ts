@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, getFirestore } from "firebase/firestore";
 import {
   VITE_FIREBASE_API_KEY,
   VITE_FIREBASE_PROJECT_ID,
@@ -35,7 +35,7 @@ export const userNotificationColRef = (ID: string) =>
   collection(db, `allUsers/${ID}/notifications`);
 
 //-- doc refs
-export const postDocRef = doc(postCOlRef, "publicPosts");
+// export const postDocRef = doc(postCOlRef, "publicPosts");
 
 //-- auth provider
 export const GoogleProvider = new GoogleAuthProvider();

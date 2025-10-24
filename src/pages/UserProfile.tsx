@@ -29,9 +29,10 @@ export default function UserProfile() {
 
   //--  custom_hooks
   const posts = usePost();
+
   const { data: user, isPending } = useStoreUser(username as string);
   const { data: currentAuthUser } = useAuthUserStore();
-  console.log(currentAuthUser);
+  console.log(posts);
 
   if (!isPending && !user)
     throw new Error(`The User With The Username: ${username}. Does not exist`);
@@ -44,7 +45,8 @@ export default function UserProfile() {
   }, [currentAuthUser, user]);
 
   //-- utils
-  const allUsersPost = posts.filter((post) => user?.posts?.includes(post.time));
+  const allUsersPost = posts.filter((post) => user?.posts?.includes(post.id));
+
   const colorObj = (tab: TabType) => {
     if (tabParams === null && tab === "post") return { color: "var(--main)" };
 

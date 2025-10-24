@@ -1,5 +1,9 @@
+import type { Timestamp } from "firebase/firestore";
+
 //--  POSTS
 export type PostsType = {
+  id: string;
+  date: Timestamp;
   sender: string;
   time: string;
   userId: string;

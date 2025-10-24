@@ -1,7 +1,16 @@
-import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
-import { auth, postDocRef, usersColRef } from "../db/firebase";
+import {
+  arrayUnion,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { auth, postCOlRef, usersColRef } from "../db/firebase";
 import type { Dispatch, SetStateAction } from "react";
 import type { PostsType } from "../types/DatabaseTypes";
+import { nanoid } from "nanoid";
 
 export async function createPostAction(postData: {
   sender: string;
@@ -9,14 +18,15 @@ export async function createPostAction(postData: {
 }) {
   try {
     const time = new Date().toISOString();
-    await updateDoc(postDocRef, {
-      posts: arrayUnion({
-        ...postData,
-        time,
-      }),
+    const postId = nanoid();
+
+    await setDoc(doc(postCOlRef, postId), {
+      ...postData,
+      time,
+      date: new Date(),
     });
     await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
-      posts: arrayUnion(time),
+      posts: arrayUnion(postId),
     });
   } catch (err) {
     console.error(err);
@@ -28,9 +38,17 @@ export async function getAllPostsAction(
   resetState: Dispatch<SetStateAction<PostsType>>
 ) {
   try {
-    const unSub = await onSnapshot(postDocRef, async (doc) => {
-      resetState(doc.data()?.posts?.reverse() || []);
-    });
+    const unSub = await onSnapshot(
+      query(postCOlRef, orderBy("date", "desc")),
+      async (docs) => {
+        if (docs.empty) resetState([]);
+        else
+          resetState(
+            docs.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as PostsType
+          );
+      }
+    );
+
     return unSub;
   } catch (err) {
     console.log(err);
