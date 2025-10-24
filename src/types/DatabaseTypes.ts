@@ -17,7 +17,7 @@ export interface StoreUserType {
   createdAt: string;
   friends: { status: string; id: string }[];
   photoURL: null | string;
-  post: string[];
+  posts: string[];
   settings: {};
   user_id: string;
   username: string;
