@@ -13,10 +13,18 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
-import { auth, userNotificationColRef, usersColRef } from "../db/firebase";
+import {
+  auth,
+  postCOlRef,
+  userNotificationColRef,
+  usersColRef,
+} from "../db/firebase";
 
 //--  actions
 import {
@@ -65,6 +73,7 @@ export async function updateProfileAction(
   } = {};
   // Clear Error
   setError("");
+  console.log(data);
 
   await (Object.keys(data) as (keyof UserData)[]).forEach((key) => {
     if (!data[key]) return;
@@ -114,9 +123,26 @@ export async function updateProfileAction(
     //Update the photoURL and username
     await updateProfile(auth.currentUser as User, newData);
 
-    await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
-      ...newData,
-    });
+    if (newData.displayName || newData.username) {
+      const user = await getDoc(doc(usersColRef, auth.currentUser?.uid));
+      const postsIdArr = user.data()?.posts;
+
+      postsIdArr.forEach(async (postId: string) => {
+        const docRef = doc(postCOlRef, postId);
+        await updateDoc(docRef, {
+          sender: newData.displayName,
+        });
+      });
+      await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
+        username: newData.displayName,
+        ...newData,
+        displayName: "",
+      });
+    } else {
+      await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
+        ...newData,
+      });
+    }
   } catch (err: any) {
     console.error("Updated User Failed :", err);
     setError(err);

@@ -23,6 +23,7 @@ export async function createPostAction(postData: {
     await setDoc(doc(postCOlRef, postId), {
       ...postData,
       time,
+      id: postId,
       date: new Date(),
     });
     await updateDoc(doc(usersColRef, auth.currentUser?.uid), {
