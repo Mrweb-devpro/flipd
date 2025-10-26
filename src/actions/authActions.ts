@@ -107,8 +107,9 @@ export async function SignUpAction({
   remember: true | false;
 }) {
   try {
+    const trimedUsername = username.trim();
     // check in if useranme already exist
-    await checkIfUsernameExist(username);
+    await checkIfUsernameExist(trimedUsername);
 
     // active remember me functionality
     if (!remember) await setPersistence(auth, browserSessionPersistence);
@@ -121,11 +122,11 @@ export async function SignUpAction({
 
     // Add username to profile
     await updateProfile(userCred.user, {
-      displayName: username,
+      displayName: trimedUsername,
     });
 
     // Store user details with the in the firestore
-    await createStoreUserObj(userCred.user, username, bio);
+    await createStoreUserObj(userCred.user, trimedUsername, bio);
 
     if (!remember)
       localStorage.setItem(NoRememberStorageKey, JSON.stringify(true));
