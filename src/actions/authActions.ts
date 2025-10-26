@@ -107,7 +107,7 @@ export async function SignUpAction({
   remember: true | false;
 }) {
   try {
-    const trimedUsername = username.trim();
+    const trimedUsername = username.trim().replaceAll(" ", "");
     // check in if useranme already exist
     await checkIfUsernameExist(trimedUsername);
 
